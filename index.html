@@ -1,0 +1,884 @@
+<style>
+  :root {
+    --bg-dark: #0a0a0a;
+    --bg-light: #f7f7f7;
+    --text-main: #111111;
+    --text-muted: #666666;
+    --accent-blue: #1a3d7c;
+    --accent-yellow: #f2c230;
+    --card-bg: #ffffff;
+    --border-soft: #e2e2e2;
+    --max-width: 1100px;
+    --radius-lg: 14px;
+    --shadow-soft: 0 12px 30px rgba(0,0,0,0.08);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
+  }
+
+  .page-wrapper {
+    min-height: 100vh;
+    background: radial-gradient(circle at top left, #1a3d7c22, transparent 55%),
+                radial-gradient(circle at bottom right, #f2c23022, transparent 55%),
+                #f3f3f3;
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(18px);
+    background: linear-gradient(to bottom, rgba(243,243,243,0.96), rgba(243,243,243,0.9));
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-main);
+  }
+
+  .brand-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 2px solid var(--accent-blue);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    background: #ffffff;
+  }
+
+  .brand-text {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    font-size: 0.9rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.4rem;
+    align-items: center;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent-blue);
+  }
+
+  .btn-small {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--accent-blue);
+    color: #ffffff;
+    background: var(--accent-blue);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    box-shadow: 0 6px 14px rgba(26,61,124,0.35);
+  }
+
+  .btn-small:hover {
+    transform: translateY(-1px);
+    background: #234b96;
+  }
+
+  main {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2rem 1.2rem 3rem;
+  }
+
+  /* HERO */
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 2.5rem;
+    padding: 2.5rem 0 3rem;
+    align-items: center;
+  }
+
+  .hero-intro-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(26,61,124,0.08);
+    color: var(--accent-blue);
+    font-weight: 500;
+    margin-bottom: 0.9rem;
+  }
+
+  .hero-title {
+    font-size: 2.4rem;
+    line-height: 1.15;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.03em;
+  }
+
+  .hero-subtitle {
+    font-size: 0.98rem;
+    color: var(--text-muted);
+    max-width: 34rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-tag-pill {
+    font-size: 0.78rem;
+    padding: 0.32rem 0.7rem;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    color: var(--text-muted);
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .btn-primary {
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    border: none;
+    background: var(--accent-blue);
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 14px 30px rgba(26,61,124,0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    background: #234b96;
+    box-shadow: 0 18px 40px rgba(26,61,124,0.4);
+  }
+
+  .btn-ghost {
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-soft);
+    background: rgba(255,255,255,0.7);
+    color: var(--text-main);
+    font-size: 0.88rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+
+  .btn-ghost:hover {
+    background: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .hero-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.8rem;
+  }
+
+  .hero-media {
+    position: relative;
+  }
+
+  .hero-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 1.2rem;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-photo {
+    width: 100%;
+    height: 240px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #1a3d7c, #121924);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f7f7f7;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .hero-photo span {
+    opacity: 0.85;
+  }
+
+  .hero-badges {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.9rem;
+    gap: 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .hero-badge {
+    flex: 1;
+    background: var(--bg-light);
+    border-radius: 12px;
+    padding: 0.6rem 0.7rem;
+  }
+
+  .hero-badge-title {
+    font-weight: 600;
+    font-size: 0.78rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .hero-badge-text {
+    color: var(--text-muted);
+  }
+
+  /* GENERIC SECTIONS */
+
+  section {
+    margin-bottom: 2.5rem;
+  }
+
+  .section-header {
+    margin-bottom: 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.8rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+  }
+
+  .section-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    max-width: 26rem;
+  }
+
+  /* ABOUT */
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 1.7rem;
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.5rem;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .about-text {
+    font-size: 0.94rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .about-highlights {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+    font-size: 0.83rem;
+  }
+
+  .chip {
+    padding: 0.45rem 0.7rem;
+    border-radius: 999px;
+    background: var(--bg-light);
+    border: 1px solid var(--border-soft);
+  }
+
+  /* SKILLS */
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 0.9rem;
+    border: 1px solid var(--border-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .skill-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.2rem;
+  }
+
+  .skill-tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: #f0f0f0;
+    color: var(--text-muted);
+  }
+
+  .skill-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+
+  /* PROJECTS */
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .project-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 0.9rem;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .project-thumbnail {
+    width: 100%;
+    height: 140px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #1a3d7c, #f2c230);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0.6rem;
+  }
+
+  .project-title {
+    font-size: 0.96rem;
+    font-weight: 600;
+  }
+
+  .project-meta {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .project-link {
+    margin-top: auto;
+    font-size: 0.8rem;
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  /* EXPERIENCE */
+
+  .experience-list {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .experience-item {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--border-soft);
+  }
+
+  .exp-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.6rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .exp-role {
+    font-size: 0.96rem;
+    font-weight: 600;
+  }
+
+  .exp-company {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+  }
+
+  .exp-dates {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .exp-bullets {
+    margin-top: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding-left: 1rem;
+  }
+
+  .exp-bullets li {
+    margin-bottom: 0.15rem;
+  }
+
+  /* CONTACT / FOOTER */
+
+  .contact-card {
+    background: #111111;
+    color: #f5f5f5;
+    border-radius: 18px;
+    padding: 1.5rem 1.6rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 1.4rem;
+    align-items: center;
+  }
+
+  .contact-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .contact-text {
+    font-size: 0.9rem;
+    color: #c5c5c5;
+    margin-bottom: 0.8rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    font-size: 0.86rem;
+  }
+
+  .contact-link {
+    color: #f5f5f5;
+    text-decoration: none;
+  }
+
+  .contact-link span {
+    color: #c5c5c5;
+  }
+
+  .footer {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 1.2rem 1.2rem 2rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    align-items: center;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 0.8rem;
+  }
+
+  .footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  /* RESPONSIVE */
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hero-media {
+      order: -1;
+    }
+    .about-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .skills-grid,
+    .projects-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .contact-card {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nav-inner {
+      padding: 0.7rem 0.6rem;
+    }
+    main {
+      padding: 1.5rem 0.7rem 2.2rem;
+    }
+    .hero-title {
+      font-size: 1.9rem;
+    }
+    .skills-grid,
+    .projects-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .nav-links {
+      display: none; /* para no complicar: menú sencillo */
+    }
+  }
+</style>
+
+<div class="page-wrapper">
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="#top" class="brand">
+        <div class="brand-logo">MC</div>
+        <div class="brand-text">Monte Cruz Engineering</div>
+      </a>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+        <a href="TU_LINK_CV.pdf" class="btn-small" target="_blank" rel="noopener">Download CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="hero-intro-tag">
+          <span>🔧</span> Mechanical & Performance Engineer
+        </div>
+        <h1 class="hero-title">
+          Engineering builds that run, perform and last.
+        </h1>
+        <p class="hero-subtitle">
+          I design, build and troubleshoot machines — from engines and drivetrains to automated machinery. Hands-on, CAD-driven and obsessed with reliability and performance.
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag-pill">Powertrain & Engines</span>
+          <span class="hero-tag-pill">CAD & FEA</span>
+          <span class="hero-tag-pill">Automation & LiDAR</span>
+          <span class="hero-tag-pill">Hands-on Builds</span>
+        </div>
+        <div class="hero-buttons">
+          <a href="#projects" class="btn-primary">View projects</a>
+          <a href="TU_LINK_CV.pdf" target="_blank" rel="noopener" class="btn-ghost">Download CV</a>
+        </div>
+        <p class="hero-note">
+          Available for roles in automotive, motorsport, aerospace, heavy machinery and R&D.
+        </p>
+      </div>
+
+      <div class="hero-media">
+        <div class="hero-card">
+          <div class="hero-photo">
+            <span>
+              Aquí puedes poner una foto tuya trabajando con motores, soldando o armando componentes.  
+              Mientras tanto, este bloque es un placeholder visual.
+            </span>
+          </div>
+          <div class="hero-badges">
+            <div class="hero-badge">
+              <div class="hero-badge-title">Powertrain & Engines</div>
+              <div class="hero-badge-text">Engine repair, diagnostics, reliability.</div>
+            </div>
+            <div class="hero-badge">
+              <div class="hero-badge-title">CAD & Simulation</div>
+              <div class="hero-badge-text">SolidWorks, Creo, FEA for real builds.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-header">
+        <h2 class="section-title">About me</h2>
+        <p class="section-subtitle">
+          Mechanical engineer focused on building and improving real machines — cars, engines and automated systems — with a mix of design, fabrication and field diagnostics.
+        </p>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            I’m Pablo Cruz, a mechanical engineer from México with a strong focus on hands-on engineering. 
+            I enjoy the full lifecycle of a build: from CAD and simulation to fabrication, testing and troubleshooting on the floor.
+          </p>
+          <br>
+          <p>
+            My experience spans industrial automation, LiDAR-based systems, and mechanical design, 
+            as well as engine repair and performance-oriented projects. 
+            Under the Monte Cruz vision, I aim to design and build machines with soul — 
+            rally-inspired cars, adventure vehicles and purpose-driven engineering projects.
+          </p>
+        </div>
+        <div>
+          <div class="about-highlights">
+            <div class="chip">B.S. Mechanical Engineering – Tecnológico de Monterrey</div>
+            <div class="chip">SolidWorks certifications</div>
+            <div class="chip">Gasoline engine repair certificate</div>
+            <div class="chip">Field service & automation experience</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-header">
+        <h2 class="section-title">Skills</h2>
+        <p class="section-subtitle">
+          A mix of mechanical, CAD/CAE and automation skills backed by real-world work: engines, drivetrains, machinery and sensors.
+        </p>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-title">Mechanical / Hands-on</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Engine disassembly & rebuild</span>
+            <span class="skill-tag">Drivetrain & suspension</span>
+            <span class="skill-tag">Hydraulics & pneumatics</span>
+            <span class="skill-tag">Welding (MIG/TIG)</span>
+          </div>
+          <div class="skill-note">
+            Aquí puedes sustituir esta tarjeta por una galería de fotos soldando, armando motores, etc.
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-title">CAD & Simulation</div>
+          <div class="skill-tags">
+            <span class="skill-tag">SolidWorks (CSWA / CSWP)</span>
+            <span class="skill-tag">Creo / Fusion 360</span>
+            <span class="skill-tag">FEA (static / modal)</span>
+            <span class="skill-tag">3D assemblies</span>
+          </div>
+          <div class="skill-note">
+            Ideal para mostrar renders de chasis, subframes, brackets, etc.
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-title">Automation & Sensors</div>
+          <div class="skill-tags">
+            <span class="skill-tag">LiDAR systems</span>
+            <span class="skill-tag">PLC (TwinCAT / Siemens)</span>
+            <span class="skill-tag">Vision systems</span>
+            <span class="skill-tag">Troubleshooting on site</span>
+          </div>
+          <div class="skill-note">
+            Basado en tu experiencia en AV Flexologic / Elettric 80.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-header">
+        <h2 class="section-title">Projects</h2>
+        <p class="section-subtitle">
+          Selected builds and engineering work where I combine CAD, fabrication and real-world testing. Each project has its own technical breakdown.
+        </p>
+      </div>
+      <div class="projects-grid">
+        <article class="project-card">
+          <div class="project-thumbnail">
+            Engine rebuild & diagnostics – placeholder image
+          </div>
+          <h3 class="project-title">Gasoline Engine Rebuild & Diagnostics</h3>
+          <p class="project-meta">
+            Powertrain · Engine repair certificate · Hands-on
+          </p>
+          <p class="project-meta">
+            Full disassembly, inspection, component replacement and testing, with focus on reliability and learning failure modes.
+          </p>
+          <a href="#" class="project-link">View project details</a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-thumbnail">
+            CAD + FEA suspension concept – placeholder
+          </div>
+          <h3 class="project-title">Suspension Subframe – CAD & FEA Concept</h3>
+          <p class="project-meta">
+            CAD/CAE · Suspension · Motorsports-inspired
+          </p>
+          <p class="project-meta">
+            Designing a tubular rear subframe inspired by rally builds, validating stiffness and weight with FEA.
+          </p>
+          <a href="#" class="project-link">View project details</a>
+        </article>
+
+        <article class="project-card">
+          <div class="project-thumbnail">
+            Solar panel build – placeholder
+          </div>
+          <h3 class="project-title">75W Custom-Built Solar Panel</h3>
+          <p class="project-meta">
+            Energy · Fabrication · Testing
+          </p>
+          <p class="project-meta">
+            From raw cells to sealed panel, including wiring, layout, enclosure and performance testing under real conditions.
+          </p>
+          <a href="#" class="project-link">View project details</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="section-header">
+        <h2 class="section-title">Experience</h2>
+        <p class="section-subtitle">
+          Professional roles where I apply mechanical design, automation and troubleshooting to real industrial systems.
+        </p>
+      </div>
+      <div class="experience-list">
+        <div class="experience-item">
+          <div class="exp-top">
+            <div>
+              <div class="exp-role">Service & Support Engineer</div>
+              <div class="exp-company">AV Flexologic</div>
+            </div>
+            <div class="exp-dates">2024 – Present</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Diagnosis and troubleshooting of flexographic plate mounting machines.</li>
+            <li>Work with LiDAR, sensors and automation to solve on-site issues.</li>
+            <li>Coordinate spare parts, upgrades and technical recommendations with customers.</li>
+          </ul>
+        </div>
+
+        <div class="experience-item">
+          <div class="exp-top">
+            <div>
+              <div class="exp-role">Automation / Service Engineer</div>
+              <div class="exp-company">Elettric 80</div>
+            </div>
+            <div class="exp-dates">2023 – 2024</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Support for LGVs and automated systems in beverage and food plants.</li>
+            <li>PLC and sensor troubleshooting in demanding industrial environments.</li>
+          </ul>
+        </div>
+
+        <div class="experience-item">
+          <div class="exp-top">
+            <div>
+              <div class="exp-role">Mechanical Design Intern</div>
+              <div class="exp-company">John Deere</div>
+            </div>
+            <div class="exp-dates">20XX – 20XX</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>CAD design of mechanical components for agricultural machinery.</li>
+            <li>Assistance in integration, routing and assembly documentation.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="contact-card">
+        <div>
+          <h2 class="contact-title">Let’s talk about engineering builds.</h2>
+          <p class="contact-text">
+            Open to roles where I can design, build and improve machines — 
+            especially in automotive, motorsport, aerospace and heavy machinery.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:TU_CORREO@correo.com" class="contact-link">
+              <strong>Email:</strong> <span> TU_CORREO@correo.com</span>
+            </a>
+            <a href="https://www.linkedin.com/in/TU_LINK" target="_blank" rel="noopener" class="contact-link">
+              <strong>LinkedIn:</strong> <span> linkedin.com/in/TU_LINK</span>
+            </a>
+            <a href="https://github.com/TU_GITHUB" target="_blank" rel="noopener" class="contact-link">
+              <strong>GitHub:</strong> <span> github.com/TU_GITHUB</span>
+            </a>
+          </div>
+        </div>
+        <div>
+          <p class="contact-text">
+            If you want a deeper technical breakdown of any project, I can share detailed PDFs, 
+            additional CAD models and test notes on request.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>© Monte Cruz Engineering – Pablo Cruz</div>
+    <div class="footer-links">
+      <a href="#top">Back to top</a>
+      <a href="TU_LINK_CV.pdf" target="_blank" rel="noopener">CV</a>
+    </div>
+  </footer>
+</div>
