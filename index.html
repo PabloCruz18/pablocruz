@@ -48,12 +48,13 @@
                 #f3f3f3;
   }
   */
+  /* === BACKUP DEL FONDO CLARO ANTERIOR ===
   .page-wrapper {
     min-height: 100vh;
     background:
       radial-gradient(circle at top left, rgba(27, 75, 155, 0.16), transparent 55%),
       radial-gradient(circle at bottom right, rgba(255, 122, 26, 0.18), transparent 55%),
-      #e9ecf3;  /* gris clarito */
+      #e9ecf3;
     position: relative;
   }
   .page-wrapper::before {
@@ -64,10 +65,36 @@
     z-index: -1;
     background:
       url("https://github.com/PabloCruz18/pablocruz/blob/main/Build1.jpg?raw=true") bottom right / 420px auto no-repeat;
-    opacity: 0.12;              /* súper suave, la puedes subir a 0.12–0.15 si quieres más */
+    opacity: 0.12;
     mix-blend-mode: multiply;
   }
+  === FIN BACKUP FONDO CLARO === */
+  
+  /* === FONDO MOTORSPORT RACING ACTIVO === */
+  .page-wrapper {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top left, rgba(27, 75, 155, 0.26), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(255, 122, 26, 0.24), transparent 55%),
+      var(--bg-dark); /* ahora sí usamos el fondo deportivo oscuro */
+    position: relative;
+  }
+  
+  .page-wrapper::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background:
+      url("https://github.com/PabloCruz18/pablocruz/blob/main/Build1.jpg?raw=true")
+      bottom right / 420px auto no-repeat;
+    opacity: 0.10;     /* más suave sobre fondo oscuro */
+    mix-blend-mode: screen; /* para que “brille” un poco en vez de oscurecer */
+  }
 
+
+  /* === BACKUP NAV CLARA ORIGNAL ===
   .nav {
     position: sticky;
     top: 0;
@@ -75,6 +102,17 @@
     backdrop-filter: blur(18px);
     background: linear-gradient(to bottom, rgba(243,243,243,0.96), rgba(243,243,243,0.9));
     border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  === FIN NAV CLARA === */
+  
+  /* === NAV MOTORSPORT OSCURA === */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(18px);
+    background: linear-gradient(to bottom, rgba(5,6,10,0.96), rgba(5,6,10,0.9));
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
 
   .nav-inner {
@@ -91,7 +129,7 @@
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
-    color: var(--text-main);
+    color: #f5f5f5; /* antes var(--text-main) */
   }
 
   .brand-logo {
@@ -112,6 +150,7 @@
     font-weight: 600;
     letter-spacing: 0.04em;
     font-size: 0.9rem;
+    color: #c5cad8; /* mejor contraste en nav oscura */
   }
 
   .nav-links {
@@ -123,12 +162,12 @@
   .nav-links a {
     text-decoration: none;
     font-size: 0.88rem;
-    color: var(--text-muted);
+    color: #c5cad8;             /* más claro en fondo oscuro */
     transition: color 0.2s ease;
   }
 
   .nav-links a:hover {
-    color: var(--accent-blue);
+    color: color: var(--accent-yellow); /* naranja racing al hover var(--accent-blue);*/
   }
 
   .btn-small {
