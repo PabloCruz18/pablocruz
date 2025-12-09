@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gasoline Engine Rebuild – Monte Cruz Engineering</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-body: #050509;
+      --text-main: #f5f5f5;
+      --text-muted: #b3b3c2;
+      --accent: #f2c230;
+      --accent-soft: rgba(242, 194, 48, 0.2);
+      --card-bg: rgba(15, 17, 30, 0.9);
+      --border-soft: rgba(255,255,255,0.08);
+      --radius-lg: 18px;
+      --shadow-soft: 0 24px 60px rgba(0,0,0,0.65);
+      --max-width: 1100px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      background: radial-gradient(circle at top left, #1a3d7c33, transparent 60%),
+                  radial-gradient(circle at bottom right, #f2c23033, transparent 60%),
+                  var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* NAV */
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(5,5,12,0.92), rgba(5,5,12,0.65));
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.7rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(5,5,12,0.8);
+    }
+
+    .brand-text {
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.82rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      padding: 0.25rem 0.4rem;
+      border-radius: 999px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255,255,255,0.04);
+      color: var(--text-main);
+    }
+
+    .tag-small {
+      font-size: 0.72rem;
+      padding: 0.24rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.7);
+      color: var(--text-muted);
+    }
+
+    /* HERO */
+
+    .hero-wrapper {
+      position: relative;
+      min-height: 75vh;
+      margin-top: 3.1rem; /* espacio por el nav fijo */
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .hero-banner {
+      position: relative;
+      flex: 1;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    /* 👇 Cambia aquí la imagen de fondo del proyecto */
+    .hero-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to top, rgba(5,5,12,0.9), rgba(5,5,12,0.4)),
+        url("AQUI_VA_TU_URL_DE_IMAGEN_DE_FONDO.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: saturate(1.1);
+      transform: scale(1.02);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 3.5rem 1.4rem 3rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: flex-end;
+      z-index: 1;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .project-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .project-title {
+      font-size: 2.3rem;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+    }
+
+    .project-meta {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+    }
+
+    .project-tag {
+      font-size: 0.76rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(5,5,12,0.6);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text-muted);
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+      margin-top: 0.8rem;
+    }
+
+    .btn-primary {
+      padding: 0.65rem 1.3rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #1a1200;
+      font-size: 0.86rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      background: #ffd95b;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.75);
+    }
+
+    .btn-ghost {
+      padding: 0.6rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(5,5,12,0.6);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(5,5,12,0.9);
+      border-color: rgba(255,255,255,0.5);
+      color: var(--text-main);
+    }
+
+    .hero-right {
+      justify-self: flex-end;
+    }
+
+    .hero-spec-card {
+      background: rgba(8,10,24,0.92);
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 1rem 1.1rem;
+      box-shadow: var(--shadow-soft);
+      font-size: 0.82rem;
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .spec-title {
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+
+    .spec-label {
+      color: var(--text-muted);
+    }
+
+    .spec-value {
+      font-weight: 500;
+    }
+
+    /* MAIN CONTENT */
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2.4rem 1.4rem 3rem;
+    }
+
+    .section-label {
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.7rem;
+    }
+
+    /* WHY / HOW / RESULTS */
+
+    .whr-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.4rem;
+    }
+
+    .whr-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1rem 0.9rem;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      font-size: 0.86rem;
+    }
+
+    .whr-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(242,194,48,0.16), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .whr-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .whr-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .whr-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(5,5,12,0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* EXTRA BLOCK – PROCESS SUMMARY */
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 1rem;
+      margin-bottom: 2.6rem;
+    }
+
+    .process-card {
+      background: rgba(8,10,24,0.94);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 1.1rem 1.1rem 1rem;
+      font-size: 0.85rem;
+      box-shadow: var(--shadow-soft);
+      color: var(--text-muted);
+    }
+
+    .process-card h3 {
+      font-size: 0.96rem;
+      margin-bottom: 0.4rem;
+      color: var(--text-main);
+    }
+
+    .process-list {
+      padding-left: 1.1rem;
+      margin-top: 0.2rem;
+    }
+
+    .process-list li {
+      margin-bottom: 0.18rem;
+    }
+
+    /* BACK LINK / FOOTER */
+
+    .back-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 0.8rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .footer {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1.5rem 1.4rem 2.3rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 900px) {
+      .hero-content {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 3rem;
+      }
+      .hero-right {
+        justify-self: stretch;
+      }
+      .whr-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .process-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-inner {
+        padding-inline: 0.9rem;
+      }
+      main {
+        padding-inline: 0.9rem;
+      }
+      .hero-content {
+        padding-inline: 0.9rem;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="index.html#top" class="brand">
+        <div class="brand-logo">MC</div>
+        <div class="brand-text">Monte Cruz Engineering</div>
+      </a>
+      <nav class="nav-links">
+        <span class="tag-small">Project view</span>
+        <a href="index.html#projects">All projects</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero-wrapper">
+    <div class="hero-banner">
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="project-label">Project · Powertrain · Hands-on</div>
+          <h1 class="project-title">Gasoline Engine Rebuild & Diagnostics</h1>
+          <p class="project-meta">
+            Personal / training project focused on learning failure modes, good assembly practices and reliability thinking
+            by rebuilding a gasoline engine from teardown to testing.
+          </p>
+
+          <div class="project-tags">
+            <span class="project-tag">Engine teardown & inspection</span>
+            <span class="project-tag">Root cause & wear analysis</span>
+            <span class="project-tag">Assembly & torque discipline</span>
+            <span class="project-tag">Testing & validation</span>
+          </div>
+
+          <div class="hero-cta-row">
+            <a href="#details" class="btn-primary">
+              See Why / How / Results
+            </a>
+            <a href="index.html#projects" class="btn-ghost">
+              ← Back to all projects
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-spec-card">
+            <div class="spec-title">Project specs</div>
+            <div class="spec-row">
+              <span class="spec-label">Type</span>
+              <span class="spec-value">IC engine rebuild</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Scope</span>
+              <span class="spec-value">Teardown → inspection → rebuild → test</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Focus</span>
+              <span class="spec-value">Reliability, discipline & learning</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Skills</span>
+              <span class="spec-value">Mechanical · diagnostic · documentation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main id="details">
+    <!-- WHY / HOW / RESULTS -->
+    <div class="section-label">Overview</div>
+    <h2 class="section-title">Why, how and what I got from this project</h2>
+
+    <div class="whr-grid">
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Why</div>
+          <h3 class="whr-title">Go beyond “it runs”</h3>
+          <p>
+            I wanted to understand what actually happens inside an engine over time: how components wear, which mistakes
+            during assembly lead to failures and what good practices look like in real hardware, not just theory.
+          </p>
+        </div>
+      </article>
+
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">How</div>
+          <h3 class="whr-title">Structured teardown & rebuild</h3>
+          <p>
+            I performed a full teardown, cleaning and inspection of all components, documenting findings with photos,
+            measuring key parts where possible, replacing critical elements and reassembling the engine following torque
+            sequences and a disciplined workflow.
+          </p>
+        </div>
+      </article>
+
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Results</div>
+          <h3 class="whr-title">Reliable start & clear learnings</h3>
+          <p>
+            The engine ran again with reduced noise and more consistent behavior. More importantly, I left with a clearer
+            mental model of what “good assembly” means and a list of improvements for tooling, measurement and process for
+            the next build.
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <!-- PROCESS / LEARNINGS -->
+    <div class="process-grid">
+      <div class="process-card">
+        <h3>Process highlights</h3>
+        <ul class="process-list">
+          <li>Planned teardown with labeling and photo documentation.</li>
+          <li>Visual and basic dimensional inspection of key components.</li>
+          <li>Cleaning, degreasing and surface preparation before assembly.</li>
+          <li>Use of assembly lube, correct torque specs and sequences.</li>
+          <li>First start, leak checks and basic functional tests.</li>
+        </ul>
+      </div>
+      <div class="process-card">
+        <h3>Engineering takeaways</h3>
+        <ul class="process-list">
+          <li>Importance of cleanliness and organization in reliability.</li>
+          <li>How small assembly errors can create big future problems.</li>
+          <li>Better understanding of wear patterns and what they tell you.</li>
+          <li>How to document a build so it is useful as a portfolio piece.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="back-row">
+      <a href="index.html#projects" class="back-link">← Back to all projects</a>
+      <span>Need a deeper technical breakdown? I can share more notes, photos and measurements on request.</span>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div>© Monte Cruz Engineering – Pablo Cruz</div>
+    <div>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </footer>
+</body>
+</html>
