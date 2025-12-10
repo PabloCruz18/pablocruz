@@ -1,5 +1,5 @@
 <style>
-  /*
+  
   :root {
     --bg-dark: #0a0a0a;
     --bg-light: #f7f7f7;
@@ -13,7 +13,9 @@
     --radius-lg: 14px;
     --shadow-soft: 0 12px 30px rgba(0,0,0,0.08);
   }
-  */
+  
+  /* === THEME MOTORSPORT === */
+@media all and (max-width: 0px) {
   :root {
     --bg-dark: #05060a;          /* fondo general más deportivo */
     --bg-light: #f0f1f4;         /* gris claro para secciones */
@@ -27,7 +29,7 @@
     --radius-lg: 14px;
     --shadow-soft: 0 14px 34px rgba(0,0,0,0.14);
   }
-
+}
   * {
     box-sizing: border-box;
     margin: 0;
@@ -48,7 +50,7 @@
                 #f3f3f3;
   }
   */
-  /* === BACKUP DEL FONDO CLARO ANTERIOR ===
+   === BACKUP DEL FONDO CLARO ANTERIOR ===
   .page-wrapper {
     min-height: 100vh;
     background:
@@ -68,18 +70,20 @@
     opacity: 0.12;
     mix-blend-mode: multiply;
   }
-  === FIN BACKUP FONDO CLARO === */
+  /*=== FIN BACKUP FONDO CLARO === */
   
   /* === FONDO MOTORSPORT RACING ACTIVO === */
+  /*
   .page-wrapper {
     min-height: 100vh;
     background:
       radial-gradient(circle at top left, rgba(27, 75, 155, 0.26), transparent 55%),
       radial-gradient(circle at bottom right, rgba(255, 122, 26, 0.24), transparent 55%),
-      var(--bg-dark); /* ahora sí usamos el fondo deportivo oscuro */
+      var(--bg-dark); 
     position: relative;
   }
-  
+  */
+  /*
   .page-wrapper::before {
     content: "";
     position: fixed;
@@ -89,12 +93,12 @@
     background:
       url("https://github.com/PabloCruz18/pablocruz/blob/main/Build1.jpg?raw=true")
       bottom right / 420px auto no-repeat;
-    opacity: 0.10;     /* más suave sobre fondo oscuro */
-    mix-blend-mode: screen; /* para que “brille” un poco en vez de oscurecer */
-  }
+    opacity: 0.10;     
+    mix-blend-mode: screen; 
+  } */
+  
 
-
-  /* === BACKUP NAV CLARA ORIGNAL ===
+  /* === BACKUP NAV CLARA ORIGNAL ===*/
   .nav {
     position: sticky;
     top: 0;
@@ -103,9 +107,10 @@
     background: linear-gradient(to bottom, rgba(243,243,243,0.96), rgba(243,243,243,0.9));
     border-bottom: 1px solid rgba(0,0,0,0.05);
   }
-  === FIN NAV CLARA === */
+  /*=== FIN NAV CLARA === */
   
   /* === NAV MOTORSPORT OSCURA === */
+  /*
   .nav {
     position: sticky;
     top: 0;
@@ -113,7 +118,7 @@
     backdrop-filter: blur(18px);
     background: linear-gradient(to bottom, rgba(5,6,10,0.96), rgba(5,6,10,0.9));
     border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
+  }*/
 
   .nav-inner {
     max-width: var(--max-width);
