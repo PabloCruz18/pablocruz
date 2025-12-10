@@ -469,14 +469,14 @@
   }
   /* PROJECTS */
   /* PROJECTS */
-
+  /*
   .projects-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
   }
   
-  /* Tarjeta de proyecto con fondo oscuro difuminado / glass */
+  
   .project-card {
     position: relative;
     border-radius: 16px;
@@ -486,7 +486,7 @@
     gap: 0.55rem;
     overflow: hidden;
   
-    /* Fondo “motorsport glass” */
+    
     background:
       radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 55%),
       radial-gradient(circle at bottom right, rgba(27, 75, 155, 0.22), transparent 55%),
@@ -511,7 +511,7 @@
     border-color: rgba(27, 75, 155, 0.85); 
   }
   
-  /* Contenedor de imagen con zoom suave */
+  
   .img-hover-wrap {
     position: relative;
     overflow: hidden;
@@ -529,7 +529,7 @@
     transform: scale(1.06);
   }
   
-  /* Thumbnail (cuando no haya imagen, se ve gradiente racing) */
+  
   .project-thumbnail {
     width: 100%;
     height: 140px;
@@ -552,7 +552,7 @@
     border-radius: 16px;
   }
   
-  /* Texto dentro de la tarjeta */
+  
   .project-title {
     font-size: 0.96rem;
     font-weight: 600;
@@ -564,15 +564,15 @@
     color: var(--text-muted);
   }
   
-  /* Link a “View project details” */
+  
   .project-link {
     margin-top: auto;
     font-size: 0.8rem;
-    color: var(--accent-blue); /* resalta mejor sobre fondo oscuro */
+    color: var(--accent-blue); 
     text-decoration: none;
     font-weight: 500;
-  }
-  /*.projects-grid {
+  }*/
+  .projects-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
@@ -651,7 +651,7 @@
     color: var(--accent-blue);
     text-decoration: none;
     font-weight: 500;
-  }*/
+  }
 
   /* BUILDS GALLERY / MEDIA */
 
