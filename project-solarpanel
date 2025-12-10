@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Solar panel build – Pablo Cruz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* === MISMOS ESTILOS BASE QUE INDEX (VERSIÓN RESUMIDA) === */
+
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-light: #f7f7f7;
+      --text-main: #111111;
+      --text-muted: #666666;
+      --accent-blue: #1a3d7c;
+      --accent-yellow: #f2c230;
+      --card-bg: #ffffff;
+      --border-soft: #e2e2e2;
+      --max-width: 1100px;
+      --radius-lg: 14px;
+      --shadow-soft: 0 12px 30px rgba(0,0,0,0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+    }
+    /*body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      background: #050509;              
+      color: #f5f5f5;                   
+      min-height: 100vh;
+      position: relative;               
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at top left, rgba(242, 194, 48, 0.16), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(26, 61, 124, 0.22), transparent 55%),
+        linear-gradient(to bottom, rgba(5, 5, 12, 0.94), rgba(5, 5, 12, 0.98)),
+        url("https://github.com/PabloCruz18/pablocruz/blob/1b1e99037482ae71277f992169664a59143b0ec0/subaruengine.jpg?raw=true") center/cover no-repeat;
+      opacity: 0.5;
+      filter: saturate(1.1) contrast(1.08);
+      pointer-events: none;
+    } */
+    
+
+    .page-wrapper {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #1a3d7c22, transparent 55%),
+                  radial-gradient(circle at bottom right, #f2c23022, transparent 55%),
+                  #f3f3f3;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(243,243,243,0.96), rgba(243,243,243,0.9));
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 2px solid var(--accent-blue);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      background: #ffffff;
+    }
+
+    .brand-text {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      font-size: 0.9rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.4rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-blue);
+    }
+
+    .btn-small {
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent-blue);
+      color: #ffffff;
+      background: var(--accent-blue);
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      box-shadow: 0 6px 14px rgba(26,61,124,0.35);
+    }
+
+    .btn-small:hover {
+      transform: translateY(-1px);
+      background: #234b96;
+    }
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2rem 1.2rem 3rem;
+    }
+
+    /* PROJECT HERO */
+
+    .project-hero {
+      margin: 2rem 0 2.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 1.8rem;
+      align-items: center;
+    }
+
+    .project-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.4rem;
+    }
+
+    .project-title {
+      font-size: 1.9rem;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.4rem;
+    }
+
+    .project-meta {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .tag-pill {
+      font-size: 0.76rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      color: var(--text-muted);
+    }
+
+    .project-hero-img {
+      border-radius: 18px;
+      background: linear-gradient(135deg, #1a3d7c, #0a0a0a);
+      height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f5f5f5;
+      font-size: 0.86rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .project-hero-img span {
+      opacity: 0.9;
+    }
+
+    /* WHY / HOW / RESULTS */
+
+    .whr-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.3rem;
+    }
+
+    .whr-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      box-shadow: var(--shadow-soft);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .whr-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text-main);
+    }
+
+    /* GALLERY */
+
+    .section-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 2.2rem;
+    }
+
+    .gallery-item {
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      font-size: 0.78rem;
+    }
+
+    .gallery-img {
+      height: 140px;
+      background: #d9d9d9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .gallery-caption {
+      padding: 0.45rem 0.6rem;
+      color: var(--text-muted);
+    }
+
+    /* TECH DETAILS */
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.4rem;
+    }
+
+    .tech-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--border-soft);
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .tech-card h3 {
+      font-size: 0.96rem;
+      margin-bottom: 0.4rem;
+      color: var(--text-main);
+    }
+
+    .tech-card ul {
+      padding-left: 1.1rem;
+    }
+
+    .tech-card li {
+      margin-bottom: 0.18rem;
+    }
+
+    .back-link {
+      font-size: 0.85rem;
+      color: var(--accent-blue);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.4rem;
+    }
+
+    .footer {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1.2rem 1.2rem 2rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .project-hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .whr-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .tech-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-inner {
+        padding: 0.7rem 0.6rem;
+      }
+      main {
+        padding: 1.5rem 0.7rem 2.2rem;
+      }
+      .gallery-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="nav">
+      <div class="nav-inner">
+        <a href="index.html#top" class="brand">
+          <div class="brand-logo">MC</div>
+          <div class="brand-text">Monte Cruz Engineering</div>
+        </a>
+        <nav class="nav-links">
+          <a href="index.html#projects">Projects</a>
+          <a href="index.html#skills">Skills</a>
+          <a href="index.html#experience">Experience</a>
+          <a href="index.html#contact">Contact</a>
+          <a href="Pablo Resume.pdf" class="btn-small" target="_blank" rel="noopener">Download CV</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO DEL PROYECTO -->
+      <section class="project-hero">
+        <div>
+          <div class="project-label">Project · Powertrain</div>
+          <h1 class="project-title">Gasoline Engine Rebuild & Diagnostics</h1>
+          <p class="project-meta">
+            Personal / Training project · Internal combustion engine · Year: 2025 (ejemplo)
+          </p>
+          <div class="project-tags">
+            <span class="tag-pill">Engine disassembly & inspection</span>
+            <span class="tag-pill">Failure analysis</span>
+            <span class="tag-pill">Hands-on reliability focus</span>
+          </div>
+          <p style="font-size:0.9rem; color:var(--text-muted); max-width:34rem;">
+            Rebuild of a gasoline engine to understand wear patterns, failure modes and good practices
+            for assembly, torque application and sealing. The goal was not just to make it run, but
+            to document, measure and learn.
+          </p>
+        </div>
+        <div class="project-hero-img">
+          <img src="Fotopablo.JPG" alt="Engine rebuild">
+        </div>
+      </section>
+
+      <!-- WHY / HOW / RESULTS -->
+      <section>
+        <div class="whr-grid">
+          <div class="whr-card">
+            <div class="whr-title">Why</div>
+            <p>
+              Profundizar en la mecánica interna de un motor de combustión, entender fallas comunes,
+              buenas prácticas de armado y cómo afectan a la confiabilidad y al desempeño.
+            </p>
+          </div>
+          <div class="whr-card">
+            <div class="whr-title">How</div>
+            <p>
+              Desarmado completo, limpieza, inspección visual y dimensional de componentes,
+              revisión de tolerancias básicas, reemplazo de elementos críticos y armado
+              siguiendo secuencias y torques recomendados.
+            </p>
+          </div>
+          <div class="whr-card">
+            <div class="whr-title">Results</div>
+            <p>
+              Motor operando nuevamente, reducción de ruidos y vibraciones,
+              documentación fotográfica del proceso y lista de puntos a mejorar
+              en futuros builds (herramientas, mediciones, tiempos).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MINI GALERÍA -->
+      <section>
+        <h2 class="section-title">Project gallery</h2>
+        <p class="section-subtitle">
+          A few key moments of the rebuild: disassembly, inspection, cleaning, measuring and final assembly.
+          Reemplaza estos cuadros grises por tus fotos reales.
+        </p>
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <div class="gallery-img">
+              Imagen 1 – motor antes de desarmar (placeholder)
+            </div>
+            <div class="gallery-caption">Initial condition – engine on the bench before disassembly.</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-img">
+              Imagen 2 – componentes desarmados (placeholder)
+            </div>
+            <div class="gallery-caption">Teardown – pistons, head, valvetrain and block separated.</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-img">
+              Imagen 3 – limpieza y mediciones (placeholder)
+            </div>
+            <div class="gallery-caption">Cleaning and measuring – checking wear and basic clearances.</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-img">
+              Imagen 4 – armado del short block (placeholder)
+            </div>
+            <div class="gallery-caption">Short block assembly – crankshaft, pistons and rods back in place.</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-img">
+              Imagen 5 – armado final (placeholder)
+            </div>
+            <div class="gallery-caption">Final assembly – head, covers, ancillaries and accessories.</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-img">
+              Imagen 6 – motor en pruebas (placeholder)
+            </div>
+            <div class="gallery-caption">Testing – first start and basic functional checks.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DETALLES TÉCNICOS -->
+      <section>
+        <h2 class="section-title">Technical details</h2>
+        <p class="section-subtitle">
+          Summary of tools, skills and engineering aspects involved in the project.
+        </p>
+        <div class="tech-grid">
+          <div class="tech-card">
+            <h3>Tools & methods</h3>
+            <ul>
+              <li>Basic engine stand and hand tools.</li>
+              <li>Torque wrench and measurement tools (feeler gauges, calipers).</li>
+              <li>Cleaning, degreasing and surface preparation.</li>
+              <li>Use of assembly lube and correct tightening sequences.</li>
+            </ul>
+          </div>
+          <div class="tech-card">
+            <h3>Skills & learnings</h3>
+            <ul>
+              <li>Structured disassembly and labeling of components.</li>
+              <li>Identification of wear patterns and potential root causes.</li>
+              <li>Documentation and discipline in reassembly.</li>
+              <li>Testing and validation of a rebuilt engine.</li>
+            </ul>
+          </div>
+        </div>
+        <a href="index.html#projects" class="back-link">← Back to all projects</a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>© Monte Cruz Engineering – Pablo Cruz</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#projects">Projects</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
