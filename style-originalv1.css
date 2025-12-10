@@ -126,7 +126,9 @@
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     gap: 2.5rem;
     padding: 2.5rem 0 3rem;
+    padding: 3.5rem 0 4rem;
     align-items: center;
+    min-height: calc(100vh - 80px); 
   }
 
   .hero-intro-tag {
@@ -458,6 +460,7 @@
     flex-direction: column;
     gap: 0.55rem;
     transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    overflow: hidden; 
   }
   .project-card:hover {
     transform: translateY(-4px);
@@ -467,7 +470,7 @@
   .img-hover-wrap {
     position: relative;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 16px;
   }
 
   .img-hover-wrap img {
@@ -485,7 +488,7 @@
   .project-thumbnail {
     width: 100%;
     height: 140px;
-    border-radius: 12px;
+    border-radius: 16px;
     background: linear-gradient(135deg, #1a3d7c, #f2c230);
     display: flex;
     align-items: center;
@@ -493,7 +496,14 @@
     color: #ffffff;
     font-size: 0.8rem;
     text-align: center;
-    padding: 0.6rem;
+    overflow: hidden;
+    padding: 0;
+  }
+  .project-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;   /* 👈 esto fuerza sí o sí la curva */
   }
 
   .project-title {
@@ -541,6 +551,10 @@
   }
 
   .exp-company {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+  }
+  .exp-location {
     font-size: 0.86rem;
     color: var(--text-muted);
   }
