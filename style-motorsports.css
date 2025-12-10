@@ -465,7 +465,25 @@
     color: var(--text-muted);
     margin-top: 0.2rem;
   }
-
+  /* === ACCENT LINE MOTORSPORT PARA TODAS LAS TARJETAS === */
+  .card-accent {
+    position: relative;
+  }
+  
+  .card-accent::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;                /* grosor de la línea */
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      var(--accent-blue),
+      var(--accent-yellow)
+    );                          /* azul → naranja racing */
+    border-radius: 6px 0 0 6px;
+  }
   /* PROJECTS */
 
   .projects-grid {
