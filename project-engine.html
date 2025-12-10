@@ -43,7 +43,7 @@
       padding-bottom: 2.5rem;
     }
 
-    /* NAV (claro, para que se parezca al index) */
+    /* NAV (claro, similar a index) */
 
     .nav {
       position: sticky;
@@ -120,7 +120,7 @@
       color: var(--accent-blue);
     }
 
-    /* HERO DEL PROYECTO (más claro, imagen visible) */
+    /* HERO DEL PROYECTO */
 
     .hero-container {
       max-width: var(--max-width);
@@ -183,7 +183,7 @@
       color: #f0f0f0;
     }
 
-    /* CONTENIDO MAIN (claro sobre fondo gris) */
+    /* CONTENIDO MAIN */
 
     main {
       max-width: var(--max-width);
@@ -255,6 +255,29 @@
       color: var(--text-muted);
     }
 
+    /* Imagen opcional dentro de HOW / RESULTS */
+
+    .whr-image {
+      width: 100%;
+      height: 150px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+      background: #d9d9d9;
+    }
+
+    .whr-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+
+    .whr-card:hover .whr-image img {
+      transform: scale(1.04);
+    }
+
     /* PROCESO / LEARNINGS */
 
     .two-col-grid {
@@ -286,6 +309,51 @@
 
     .card-block li {
       margin-bottom: 0.2rem;
+    }
+
+    /* GALERÍA DE FOTOS (sin descripción visible) */
+
+    .gallery-section {
+      margin-bottom: 2.4rem;
+    }
+
+    .gallery-title {
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+      color: var(--text-main);
+    }
+
+    .gallery-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      max-width: 28rem;
+      margin-bottom: 1rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .gallery-item {
+      border-radius: 12px;
+      overflow: hidden;
+      background: #d9d9d9;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      transition: transform 0.25s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.04);
     }
 
     /* BACK ROW / FOOTER */
@@ -337,6 +405,9 @@
       .hero-container {
         margin-top: 2rem;
       }
+      .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 640px) {
@@ -354,6 +425,9 @@
       }
       .nav-right {
         display: none; /* nav simple en móvil */
+      }
+      .gallery-grid {
+        grid-template-columns: minmax(0, 1fr);
       }
     }
   </style>
@@ -404,6 +478,7 @@
       <h2 class="section-title">Why · How · Results</h2>
 
       <div class="whr-grid">
+        <!-- WHY (solo texto) -->
         <article class="whr-card">
           <div class="whr-inner">
             <h3 class="whr-title-main">WHY</h3>
@@ -415,9 +490,14 @@
           </div>
         </article>
 
+        <!-- HOW (con imagen opcional) -->
         <article class="whr-card">
           <div class="whr-inner">
             <h3 class="whr-title-main">HOW</h3>
+            <div class="whr-image">
+              <!-- Cambia esta URL por una foto del proceso: motor desarmado, mesa de trabajo, etc. -->
+              <img src="URL_IMAGEN_HOW.jpg" alt="Engine rebuild process">
+            </div>
             <p class="whr-text">
               I carried out a full teardown, cleaning and inspection, documenting findings with photos and notes. 
               I replaced critical components where needed, organized parts carefully and reassembled the engine 
@@ -426,9 +506,14 @@
           </div>
         </article>
 
+        <!-- RESULTS (con imagen opcional) -->
         <article class="whr-card">
           <div class="whr-inner">
             <h3 class="whr-title-main">RESULTS</h3>
+            <div class="whr-image">
+              <!-- Cambia esta URL por una foto del motor armado, primer arranque, etc. -->
+              <img src="URL_IMAGEN_RESULTS.jpg" alt="Engine rebuild result">
+            </div>
             <p class="whr-text">
               The engine ran again with more consistent behavior and better startup. More importantly, I gained a 
               clearer mental model of good assembly practices, typical wear patterns and how to document a build 
@@ -461,6 +546,35 @@
           </ul>
         </section>
       </div>
+
+      <!-- GALERÍA DE FOTOS DEL PROYECTO -->
+      <section class="gallery-section">
+        <h2 class="gallery-title">Project gallery</h2>
+        <p class="gallery-subtitle">
+          A visual snapshot of this build: teardown, inspection, cleaning and final assembly. 
+          No captions for now — just the images telling the story.
+        </p>
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img src="URL_GALLERY_1.jpg" alt="Engine project photo 1">
+          </div>
+          <div class="gallery-item">
+            <img src="URL_GALLERY_2.jpg" alt="Engine project photo 2">
+          </div>
+          <div class="gallery-item">
+            <img src="URL_GALLERY_3.jpg" alt="Engine project photo 3">
+          </div>
+          <div class="gallery-item">
+            <img src="URL_GALLERY_4.jpg" alt="Engine project photo 4">
+          </div>
+          <div class="gallery-item">
+            <img src="URL_GALLERY_5.jpg" alt="Engine project photo 5">
+          </div>
+          <div class="gallery-item">
+            <img src="URL_GALLERY_6.jpg" alt="Engine project photo 6">
+          </div>
+        </div>
+      </section>
 
       <div class="back-row">
         <a href="index.html#projects" class="back-link">← Back to all projects</a>
