@@ -855,20 +855,22 @@
   </footer>
 
   <script>
+    // ---------------------------
     // THEME TOGGLE (Blue / Yellow)
-    const btn = document.getElementById("themeToggle");
-    const label = btn?.querySelector(".label");
-
-    const saved = localStorage.getItem("theme");
-    if (saved === "yellow") document.body.setAttribute("data-theme", "yellow");
-
-    function updateLabel(){
+    // ---------------------------
+    const themeBtn = document.getElementById("themeToggle");
+    const themeLabel = themeBtn?.querySelector(".label");
+  
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "yellow") document.body.setAttribute("data-theme", "yellow");
+  
+    function updateThemeLabel(){
       const t = document.body.getAttribute("data-theme") === "yellow" ? "Yellow" : "Blue";
-      if (label) label.textContent = t;
+      if (themeLabel) themeLabel.textContent = t;
     }
-    updateLabel();
-
-    btn?.addEventListener("click", () => {
+    updateThemeLabel();
+  
+    themeBtn?.addEventListener("click", () => {
       const isYellow = document.body.getAttribute("data-theme") === "yellow";
       if (isYellow) {
         document.body.removeAttribute("data-theme");
@@ -877,69 +879,12 @@
         document.body.setAttribute("data-theme", "yellow");
         localStorage.setItem("theme", "yellow");
       }
-      updateLabel();
-    });
-
-    // GALLERY LIGHTBOX
-    const galleryItems = Array.from(document.querySelectorAll(".gallery-item"));
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightboxImg");
-    const btnClose = document.getElementById("lightboxClose");
-    const btnPrev = document.getElementById("lightboxPrev");
-    const btnNext = document.getElementById("lightboxNext");
-  
-    let currentIndex = 0;
-  
-    function openLightbox(index) {
-      currentIndex = index;
-      lightboxImg.src = galleryItems[currentIndex].dataset.full;
-      lightbox.classList.add("is-open");
-      lightbox.setAttribute("aria-hidden", "false");
-    }
-  
-    function closeLightbox() {
-      lightbox.classList.remove("is-open");
-      lightbox.setAttribute("aria-hidden", "true");
-      lightboxImg.src = "";
-    }
-  
-    function showPrev() {
-      currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-      lightboxImg.src = galleryItems[currentIndex].dataset.full;
-    }
-  
-    function showNext() {
-      currentIndex = (currentIndex + 1) % galleryItems.length;
-      lightboxImg.src = galleryItems[currentIndex].dataset.full;
-    }
-  
-    galleryItems.forEach((item, index) => {
-      item.addEventListener("click", () => openLightbox(index));
+      updateThemeLabel();
     });
   
-    btnClose.addEventListener("click", closeLightbox);
-    btnPrev.addEventListener("click", showPrev);
-    btnNext.addEventListener("click", showNext);
-  
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
-  
-    window.addEventListener("keydown", (e) => {
-      if (!lightbox.classList.contains("is-open")) return;
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") showPrev();
-      if (e.key === "ArrowRight") showNext();
-    });
-  
-    /* Swipe para móvil */
-    let startX = 0;
-    lightbox.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-    lightbox.addEventListener("touchend", e => {
-      const diff = e.changedTouches[0].clientX - startX;
-      if (Math.abs(diff) > 50) diff > 0 ? showPrev() : showNext();
-    });
-    // --- Gallery stages (tabs) ---
+    // ---------------------------
+    // GALLERY STAGES (TABS)
+    // ---------------------------
     const tabs = Array.from(document.querySelectorAll(".gallery-tab"));
     const allItems = Array.from(document.querySelectorAll(".gallery-item"));
     let activeStage = "teardown";
@@ -950,53 +895,65 @@
       tabs.forEach(t => t.classList.toggle("is-active", t.dataset.stage === stage));
   
       allItems.forEach(item => {
-        const show = item.dataset.stage === stage;
-        item.hidden = !show;
+        item.hidden = (item.dataset.stage !== stage);
       });
     }
   
     tabs.forEach(tab => tab.addEventListener("click", () => setStage(tab.dataset.stage)));
     setStage(activeStage);
   
-    // --- Lightbox with arrows + keyboard + swipe (stage-aware) ---
+    // ---------------------------
+    // LIGHTBOX (stage-aware) + arrows + keyboard + swipe
+    // ---------------------------
     const lightbox = document.getElementById("lightbox");
     const lightboxImg = document.getElementById("lightboxImg");
     const btnClose = document.getElementById("lightboxClose");
     const btnPrev = document.getElementById("lightboxPrev");
     const btnNext = document.getElementById("lightboxNext");
   
+    let currentIndex = 0;
+    let startX = 0;
+  
     function stageItems(){
       return allItems.filter(i => i.dataset.stage === activeStage);
     }
   
-    let currentIndex = 0;
-  
     function openLightbox(index){
       const items = stageItems();
+      if (!items.length) return;
+  
       currentIndex = index;
-      lightboxImg.src = items[currentIndex].dataset.full;
+      const full = items[currentIndex]?.dataset?.full;
+      if (!full) return;
+  
+      lightboxImg.src = full;
       lightbox.classList.add("is-open");
-      lightbox.setAttribute("aria-hidden","false");
+      lightbox.setAttribute("aria-hidden", "false");
     }
   
     function closeLightbox(){
       lightbox.classList.remove("is-open");
-      lightbox.setAttribute("aria-hidden","true");
+      lightbox.setAttribute("aria-hidden", "true");
       lightboxImg.src = "";
     }
   
     function showPrev(){
       const items = stageItems();
+      if (!items.length) return;
+  
       currentIndex = (currentIndex - 1 + items.length) % items.length;
       lightboxImg.src = items[currentIndex].dataset.full;
     }
   
     function showNext(){
       const items = stageItems();
+      if (!items.length) return;
+  
       currentIndex = (currentIndex + 1) % items.length;
       lightboxImg.src = items[currentIndex].dataset.full;
     }
   
+    // click on thumbnails
     allItems.forEach(item => {
       item.addEventListener("click", () => {
         const items = stageItems();
@@ -1005,36 +962,34 @@
       });
     });
   
+    // close / nav buttons
     btnClose?.addEventListener("click", closeLightbox);
     btnPrev?.addEventListener("click", showPrev);
     btnNext?.addEventListener("click", showNext);
   
-    lightbox?.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+    // click outside image
+    lightbox?.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
   
+    // keyboard
     window.addEventListener("keydown", (e) => {
       if (!lightbox.classList.contains("is-open")) return;
+  
       if (e.key === "Escape") closeLightbox();
       if (e.key === "ArrowLeft") showPrev();
       if (e.key === "ArrowRight") showNext();
     });
   
-    // Swipe
-    let startX = 0;
-    lightbox?.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-    lightbox?.addEventListener("touchend", e => {
+    // swipe
+    lightbox?.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+    });
+  
+    lightbox?.addEventListener("touchend", (e) => {
       const diff = e.changedTouches[0].clientX - startX;
       if (Math.abs(diff) > 50) diff > 0 ? showPrev() : showNext();
     });
-
-    function closeLightbox(){
-      lightbox.classList.remove("is-open");
-      lightbox.setAttribute("aria-hidden", "true");
-      lightboxImg.src = "";
-    }
-
-    lightboxClose?.addEventListener("click", closeLightbox);
-    lightbox?.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
-    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
   </script>
 </body>
 </html>
