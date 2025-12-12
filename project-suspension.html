@@ -9,17 +9,28 @@
       --bg-body: #050509;
       --text-main: #f5f5f5;
       --text-muted: #b3b3c2;
-      --accent: #f2c230;
-      --accent-soft: rgba(242, 194, 48, 0.2);
+
+      /* THEME: default BLUE */
+      --accent: #1a3d7c;
+      --accent-soft: rgba(26, 61, 124, 0.20);
+
       --card-bg: rgba(15, 17, 30, 0.9);
       --border-soft: rgba(255,255,255,0.08);
       --radius-lg: 18px;
       --shadow-soft: 0 24px 60px rgba(0,0,0,0.65);
       --max-width: 1100px;
+
+      /* LIGHT CARDS */
       --card-bg-light: rgba(245, 246, 248, 0.92);
       --card-border-light: rgba(0, 0, 0, 0.08);
       --card-text-main: #1a1a1a;
       --card-text-muted: #5f6368;
+    }
+
+    /* YELLOW THEME (toggle) */
+    body[data-theme="yellow"] {
+      --accent: #f2c230;
+      --accent-soft: rgba(242, 194, 48, 0.20);
     }
 
     * {
@@ -30,19 +41,25 @@
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-      background: radial-gradient(circle at top left, #1a3d7c33, transparent 60%),
-                  radial-gradient(circle at bottom right, #f2c23033, transparent 60%),
-                  var(--bg-body);
+      background:
+        radial-gradient(circle at top left, rgba(26, 61, 124, 0.35), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(26, 61, 124, 0.25), transparent 60%),
+        var(--bg-body);
       color: var(--text-main);
       min-height: 100vh;
     }
 
-    a {
-      color: inherit;
+    /* Make background react to theme */
+    body[data-theme="yellow"] {
+      background:
+        radial-gradient(circle at top left, rgba(26, 61, 124, 0.35), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(242, 194, 48, 0.25), transparent 60%),
+        var(--bg-body);
     }
 
-    /* NAV */
+    a { color: inherit; }
 
+    /* NAV */
     .nav {
       position: fixed;
       top: 0;
@@ -61,6 +78,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
     }
 
     .brand {
@@ -68,6 +86,7 @@
       align-items: center;
       gap: 0.5rem;
       text-decoration: none;
+      min-width: 0;
     }
 
     .brand-logo {
@@ -81,6 +100,7 @@
       font-size: 0.8rem;
       font-weight: 700;
       background: rgba(5,5,12,0.8);
+      flex: 0 0 auto;
     }
 
     .brand-text {
@@ -88,12 +108,23 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 0 0 auto;
     }
 
     .nav-links {
       display: flex;
       gap: 1rem;
       font-size: 0.82rem;
+      align-items: center;
     }
 
     .nav-links a {
@@ -118,12 +149,40 @@
       color: var(--text-muted);
     }
 
-    /* HERO */
+    /* THEME SWITCH UI */
+    .theme-toggle{
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .45rem .75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.6);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: .78rem;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .theme-toggle:hover{
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.35);
+      transform: translateY(-1px);
+    }
+    .theme-toggle .dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+    }
 
+    /* HERO */
     .hero-wrapper {
       position: relative;
       min-height: 75vh;
-      margin-top: 3.1rem; /* espacio por el nav fijo */
+      margin-top: 3.1rem;
       display: flex;
       align-items: stretch;
       justify-content: center;
@@ -136,7 +195,6 @@
       overflow: hidden;
     }
 
-    /* 👇 Cambia aquí la imagen de fondo del proyecto */
     .hero-banner::before {
       content: "";
       position: absolute;
@@ -216,7 +274,7 @@
       border-radius: 999px;
       border: none;
       background: var(--accent);
-      color: #1a1200;
+      color: #ffffff;
       font-size: 0.86rem;
       font-weight: 600;
       text-decoration: none;
@@ -229,8 +287,13 @@
 
     .btn-primary:hover {
       transform: translateY(-1px);
-      background: #ffd95b;
+      background: rgba(47, 107, 255, 1);
       box-shadow: 0 22px 60px rgba(0,0,0,0.75);
+    }
+
+    /* keep hover yellow-friendly too */
+    body[data-theme="yellow"] .btn-primary:hover {
+      background: #ffd95b;
     }
 
     .btn-ghost {
@@ -253,26 +316,26 @@
       color: var(--text-main);
     }
 
-    .hero-right {
-      justify-self: flex-end;
-    }
+    .hero-right { justify-self: flex-end; }
 
+    /* Spec card as LIGHT card for consistency */
     .hero-spec-card {
-      background: rgba(8,10,24,0.92);
+      background: var(--card-bg-light);
       border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid var(--card-border-light);
       padding: 1rem 1.1rem;
-      box-shadow: var(--shadow-soft);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.15);
       font-size: 0.82rem;
       display: grid;
       gap: 0.4rem;
+      color: var(--card-text-main);
     }
 
     .spec-title {
       font-size: 0.86rem;
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: var(--text-muted);
+      color: var(--card-text-muted);
       margin-bottom: 0.2rem;
     }
 
@@ -282,16 +345,10 @@
       gap: 0.6rem;
     }
 
-    .spec-label {
-      color: var(--text-muted);
-    }
+    .spec-label { color: var(--card-text-muted); }
+    .spec-value { font-weight: 600; }
 
-    .spec-value {
-      font-weight: 500;
-    }
-
-    /* MAIN CONTENT */
-
+    /* MAIN */
     main {
       max-width: var(--max-width);
       margin: 0 auto;
@@ -312,24 +369,13 @@
     }
 
     /* WHY / HOW / RESULTS */
-
     .whr-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1rem;
       margin-bottom: 2.4rem;
     }
-    /*
-    .whr-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 1rem 1rem 0.9rem;
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-      font-size: 0.86rem;
-    }*/
+
     .whr-card {
       background: var(--card-bg-light);
       border-radius: var(--radius-lg);
@@ -342,35 +388,26 @@
       color: var(--card-text-main);
     }
 
+    /* highlight uses theme */
     .whr-card::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top right, rgba(242,194,48,0.16), transparent 55%);
+      background: radial-gradient(circle at top right, var(--accent-soft), transparent 55%);
       opacity: 0.9;
       pointer-events: none;
     }
 
-    .whr-inner {
-      position: relative;
-      z-index: 1;
-    }
-    /*
+    .whr-inner { position: relative; z-index: 1; }
+
     .whr-title {
       font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }*/
-    .whr-title {
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 0.3rem;
       color: var(--card-text-main);
     }
-    
-    .whr-card p {
-      color: var(--card-text-muted);
-    }
+
+    .whr-card p { color: var(--card-text-muted); }
 
     .whr-tag {
       display: inline-flex;
@@ -379,30 +416,20 @@
       font-size: 0.75rem;
       padding: 0.22rem 0.55rem;
       border-radius: 999px;
-      background: rgba(5,5,12,0.8);
+      background: rgba(5,5,12,0.86);
       border: 1px solid rgba(255,255,255,0.12);
       color: var(--text-muted);
       margin-bottom: 0.5rem;
     }
 
-    /* EXTRA BLOCK – PROCESS SUMMARY */
-
+    /* PROCESS */
     .process-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
       gap: 1rem;
-      margin-bottom: 2.6rem;
+      margin-bottom: 2.0rem;
     }
-    /*
-    .process-card {
-      background: rgba(8,10,24,0.94);
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 1.1rem 1.1rem 1rem;
-      font-size: 0.85rem;
-      box-shadow: var(--shadow-soft);
-      color: var(--text-muted);
-    }*/
+
     .process-card {
       background: var(--card-bg-light);
       border-radius: var(--radius-lg);
@@ -412,12 +439,7 @@
       box-shadow: 0 18px 45px rgba(0,0,0,0.15);
       color: var(--card-text-muted);
     }
-    /*
-    .process-card h3 {
-      font-size: 0.96rem;
-      margin-bottom: 0.4rem;
-      color: var(--text-main);
-    }*/
+
     .process-card h3 {
       font-size: 0.96rem;
       margin-bottom: 0.4rem;
@@ -429,12 +451,78 @@
       margin-top: 0.2rem;
     }
 
-    .process-list li {
-      margin-bottom: 0.18rem;
+    .process-list li { margin-bottom: 0.18rem; }
+
+    /* GALLERY */
+    .gallery { margin-top: 2.2rem; }
+
+    .gallery-grid{
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: .9rem;
+      margin-top: .8rem;
+    }
+
+    .gallery-item{
+      grid-column: span 4;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      background: rgba(5,5,12,0.55);
+      padding: 0;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    .gallery-item:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(5,5,12,0.70);
+    }
+
+    .gallery-item img{
+      display: block;
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      place-items: center;
+      z-index: 999;
+      padding: 1.2rem;
+    }
+    .lightbox.is-open{ display: grid; }
+
+    .lightbox img{
+      max-width: min(1100px, 96vw);
+      max-height: 86vh;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    }
+
+    .lightbox-close{
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.65);
+      color: var(--text-main);
+      cursor: pointer;
+      font-size: 18px;
     }
 
     /* BACK LINK / FOOTER */
-
     .back-row {
       display: flex;
       justify-content: space-between;
@@ -471,36 +559,25 @@
     }
 
     /* RESPONSIVE */
-
     @media (max-width: 900px) {
       .hero-content {
         grid-template-columns: minmax(0, 1fr);
         padding-top: 3rem;
       }
-      .hero-right {
-        justify-self: stretch;
-      }
-      .whr-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .process-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
+      .hero-right { justify-self: stretch; }
+      .whr-grid { grid-template-columns: minmax(0, 1fr); }
+      .process-grid { grid-template-columns: minmax(0, 1fr); }
+      .gallery-item{ grid-column: span 6; }
     }
 
     @media (max-width: 640px) {
-      .nav-inner {
-        padding-inline: 0.9rem;
-      }
-      main {
-        padding-inline: 0.9rem;
-      }
-      .hero-content {
-        padding-inline: 0.9rem;
-      }
-      .nav-links {
-        display: none;
-      }
+      .nav-inner { padding-inline: 0.9rem; }
+      main { padding-inline: 0.9rem; }
+      .hero-content { padding-inline: 0.9rem; }
+
+      .nav-links { display: none; }
+      .gallery-item{ grid-column: span 12; }
+      .gallery-item img{ height: 220px; }
     }
   </style>
 </head>
@@ -512,11 +589,19 @@
         <div class="brand-logo">MC</div>
         <div class="brand-text">Monte Cruz Engineering</div>
       </a>
-      <nav class="nav-links">
-        <span class="tag-small">Project view</span>
-        <a href="index.html#projects">All projects</a>
-        <a href="index.html#contact">Contact</a>
-      </nav>
+
+      <div class="nav-right">
+        <nav class="nav-links">
+          <span class="tag-small">Project view</span>
+          <a href="index.html#projects">All projects</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Cambiar tema">
+          <span class="dot"></span>
+          <span class="label">Blue</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -540,12 +625,8 @@
           </div>
 
           <div class="hero-cta-row">
-            <a href="#details" class="btn-primary">
-              See Why / How / Results
-            </a>
-            <a href="index.html#projects" class="btn-ghost">
-              ← Back to all projects
-            </a>
+            <a href="#details" class="btn-primary">See Why / How / Results</a>
+            <a href="index.html#projects" class="btn-ghost">← Back to all projects</a>
           </div>
         </div>
 
@@ -640,17 +721,98 @@
       </div>
     </div>
 
+    <!-- GALLERY -->
+    <section class="gallery" aria-label="Project gallery">
+      <div class="section-label">Gallery</div>
+      <h2 class="section-title">Project Photos</h2>
+
+      <div class="gallery-grid">
+        <!-- Reemplaza estas URLs por tus fotos reales -->
+        <button class="gallery-item" type="button" data-full="https://picsum.photos/id/1011/1600/1000">
+          <img src="https://picsum.photos/id/1011/800/600" alt="Project photo 1">
+        </button>
+
+        <button class="gallery-item" type="button" data-full="https://picsum.photos/id/1015/1600/1000">
+          <img src="https://picsum.photos/id/1015/800/600" alt="Project photo 2">
+        </button>
+
+        <button class="gallery-item" type="button" data-full="https://picsum.photos/id/1025/1600/1000">
+          <img src="https://picsum.photos/id/1025/800/600" alt="Project photo 3">
+        </button>
+
+        <button class="gallery-item" type="button" data-full="https://picsum.photos/id/1035/1600/1000">
+          <img src="https://picsum.photos/id/1035/800/600" alt="Project photo 4">
+        </button>
+      </div>
+    </section>
+
     <div class="back-row">
       <a href="index.html#projects" class="back-link">← Back to all projects</a>
       <span>Need a deeper technical breakdown? I can share more notes, photos and measurements on request.</span>
     </div>
   </main>
 
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+    <img id="lightboxImg" alt="Expanded project photo">
+  </div>
+
   <footer class="footer">
     <div>© Monte Cruz Engineering – Pablo Cruz</div>
-    <div>
-      <a href="index.html#contact">Contact</a>
-    </div>
+    <div><a href="index.html#contact">Contact</a></div>
   </footer>
+
+  <script>
+    // THEME TOGGLE (Blue / Yellow)
+    const btn = document.getElementById("themeToggle");
+    const label = btn?.querySelector(".label");
+
+    const saved = localStorage.getItem("theme");
+    if (saved === "yellow") document.body.setAttribute("data-theme", "yellow");
+
+    function updateLabel(){
+      const t = document.body.getAttribute("data-theme") === "yellow" ? "Yellow" : "Blue";
+      if (label) label.textContent = t;
+    }
+    updateLabel();
+
+    btn?.addEventListener("click", () => {
+      const isYellow = document.body.getAttribute("data-theme") === "yellow";
+      if (isYellow) {
+        document.body.removeAttribute("data-theme");
+        localStorage.setItem("theme", "blue");
+      } else {
+        document.body.setAttribute("data-theme", "yellow");
+        localStorage.setItem("theme", "yellow");
+      }
+      updateLabel();
+    });
+
+    // GALLERY LIGHTBOX
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxClose = document.getElementById("lightboxClose");
+
+    document.querySelectorAll(".gallery-item").forEach(el => {
+      el.addEventListener("click", () => {
+        const full = el.getAttribute("data-full");
+        if (!full) return;
+        lightboxImg.src = full;
+        lightbox.classList.add("is-open");
+        lightbox.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    function closeLightbox(){
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImg.src = "";
+    }
+
+    lightboxClose?.addEventListener("click", closeLightbox);
+    lightbox?.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
+  </script>
 </body>
 </html>
