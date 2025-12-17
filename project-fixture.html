@@ -2,356 +2,593 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Project – Monte Cruz Engineering</title>
+  <title>Gasoline Engine Rebuild – Monte Cruz Engineering</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    :root{
-      --bg-body:#050509;
-      --text-main:#f5f5f5;
-      --text-muted:#b3b3c2;
+    :root {
+      --bg-body: #050509;
+      --text-main: #f5f5f5;
+      --text-muted: #b3b3c2;
 
-      /* default accent = BLUE */
-      --accent:#1a3d7c;
-      --accent-soft:rgba(26,61,124,.20);
+      /* THEME: default BLUE */
+      --accent: #1a3d7c;
+      --accent-soft: rgba(26, 61, 124, 0.20);
 
-      --radius-lg:18px;
-      --shadow-soft:0 24px 60px rgba(0,0,0,.65);
-      --max-width:1100px;
+      --radius-lg: 18px;
+      --shadow-soft: 0 24px 60px rgba(0,0,0,0.65);
+      --max-width: 1100px;
 
-      /* light cards */
-      --card-bg-light:rgba(245,246,248,.92);
-      --card-border-light:rgba(0,0,0,.08);
-      --card-text-main:#1a1a1a;
-      --card-text-muted:#5f6368;
+      /* LIGHT CARDS */
+      --card-bg-light: rgba(245, 246, 248, 0.92);
+      --card-border-light: rgba(0, 0, 0, 0.08);
+      --card-text-main: #1a1a1a;
+      --card-text-muted: #5f6368;
     }
 
-    body[data-theme="yellow"]{
-      --accent:#f2c230;
-      --accent-soft:rgba(242,194,48,.20);
+    /* YELLOW THEME (toggle) */
+    body[data-theme="yellow"] {
+      --accent: #f2c230;
+      --accent-soft: rgba(242, 194, 48, 0.20);
     }
 
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Inter",sans-serif;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(26,61,124,.35), transparent 60%),
-        radial-gradient(circle at bottom right, rgba(26,61,124,.25), transparent 60%),
+        radial-gradient(circle at top left, rgba(26, 61, 124, 0.35), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(26, 61, 124, 0.25), transparent 60%),
         var(--bg-body);
-      color:var(--text-main);
-      min-height:100vh;
+      color: var(--text-main);
+      min-height: 100vh;
     }
-    body[data-theme="yellow"]{
+
+    /* Make background react to theme */
+    body[data-theme="yellow"] {
       background:
-        radial-gradient(circle at top left, rgba(26,61,124,.35), transparent 60%),
-        radial-gradient(circle at bottom right, rgba(242,194,48,.25), transparent 60%),
+        radial-gradient(circle at top left, rgba(26, 61, 124, 0.35), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(242, 194, 48, 0.25), transparent 60%),
         var(--bg-body);
     }
-    a{color:inherit}
+
+    a { color: inherit; }
 
     /* NAV */
-    .nav{
-      position:fixed;top:0;left:0;right:0;z-index:50;
-      backdrop-filter:blur(16px);
-      background:linear-gradient(to bottom, rgba(5,5,12,.92), rgba(5,5,12,.65));
-      border-bottom:1px solid rgba(255,255,255,.04);
-    }
-    .nav-inner{
-      max-width:var(--max-width);
-      margin:0 auto;
-      padding:.7rem 1.2rem;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:1rem;
-    }
-    .brand{
-      display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;min-width:0;
-    }
-    .brand-logo{
-      width:32px;height:32px;border-radius:999px;
-      border:2px solid var(--accent);
-      display:inline-flex;align-items:center;justify-content:center;
-      font-size:.8rem;font-weight:700;
-      background:rgba(5,5,12,.8);
-      flex:0 0 auto;
-    }
-    .brand-text{
-      font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;
-      color:var(--text-muted);
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    }
-    .nav-right{display:inline-flex;align-items:center;gap:.75rem;flex:0 0 auto;}
-    .nav-links{display:flex;gap:1rem;font-size:.82rem;align-items:center;}
-    .nav-links a{
-      text-decoration:none;color:var(--text-muted);
-      padding:.25rem .4rem;border-radius:999px;
-      transition:background .15s ease,color .15s ease;
-    }
-    .nav-links a:hover{background:rgba(255,255,255,.04);color:var(--text-main);}
-    .tag-small{
-      font-size:.72rem;padding:.24rem .55rem;border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(5,5,12,.7);
-      color:var(--text-muted);
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(5,5,12,0.92), rgba(5,5,12,0.65));
+      border-bottom: 1px solid rgba(255,255,255,0.04);
     }
 
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.7rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(5,5,12,0.8);
+      flex: 0 0 auto;
+    }
+
+    .brand-text {
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 0 0 auto;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.82rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      padding: 0.25rem 0.4rem;
+      border-radius: 999px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255,255,255,0.04);
+      color: var(--text-main);
+    }
+
+    .tag-small {
+      font-size: 0.72rem;
+      padding: 0.24rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.7);
+      color: var(--text-muted);
+    }
+
+    /* THEME SWITCH UI */
     .theme-toggle{
-      display:inline-flex;align-items:center;gap:.5rem;
-      padding:.45rem .75rem;border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(5,5,12,.6);
-      color:var(--text-muted);
-      cursor:pointer;font-size:.78rem;
-      transition:background .15s ease,border-color .15s ease,transform .15s ease;
-      user-select:none;white-space:nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .45rem .75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.6);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: .78rem;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+      user-select: none;
+      white-space: nowrap;
     }
     .theme-toggle:hover{
-      background:rgba(255,255,255,.05);
-      border-color:rgba(255,255,255,.35);
-      transform:translateY(-1px);
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.35);
+      transform: translateY(-1px);
     }
     .theme-toggle .dot{
-      width:10px;height:10px;border-radius:999px;background:var(--accent);
-      box-shadow:0 0 0 3px rgba(255,255,255,.06);
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
     }
 
     /* HERO */
-    .hero-wrapper{
-      position:relative;
-      min-height:65vh;
-      margin-top:3.1rem;
-      display:flex;
-      align-items:stretch;
-      justify-content:center;
+    .hero-wrapper {
+      position: relative;
+      min-height: 75vh;
+      margin-top: 3.1rem;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
     }
-    .hero-banner{position:relative;flex:1;max-width:100%;overflow:hidden;}
-    .hero-banner::before{
-      content:"";position:absolute;inset:0;
+
+    .hero-banner {
+      position: relative;
+      flex: 1;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .hero-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
       background-image:
-        linear-gradient(to top, rgba(5,5,12,.9), rgba(5,5,12,.45)),
+        linear-gradient(to top, rgba(5,5,12,0.9), rgba(5,5,12,0.4)),
         url("https://github.com/PabloCruz18/pablocruz/blob/3e48d08e2461f60779d6c2956648fb9410505587/fixture.jpg?raw=true");
-      background-size:cover;background-position:center;background-repeat:no-repeat;
-      filter:saturate(1.1);
-      transform:scale(1.02);
-    }
-    .hero-content{
-      position:relative;
-      max-width:var(--max-width);
-      margin:0 auto;
-      padding:3.5rem 1.4rem 3rem;
-      display:grid;
-      grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);
-      gap:2rem;
-      align-items:flex-end;
-      z-index:1;
-    }
-    .hero-left{display:flex;flex-direction:column;gap:1rem;}
-    .project-label{
-      font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);
-    }
-    .project-title{font-size:2.3rem;letter-spacing:-.04em;line-height:1.1;}
-    .project-meta{font-size:.9rem;color:var(--text-muted);}
-
-    .project-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem;}
-    .project-tag{
-      font-size:.76rem;padding:.3rem .7rem;border-radius:999px;
-      background:rgba(5,5,12,.6);
-      border:1px solid rgba(255,255,255,.15);
-      color:var(--text-muted);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: saturate(1.1);
+      transform: scale(1.02);
     }
 
-    .hero-cta-row{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin-top:.8rem;}
-    .btn-primary{
-      padding:.65rem 1.3rem;border-radius:999px;border:none;
-      background:var(--accent);color:#fff;font-size:.86rem;font-weight:600;
-      text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;
-      box-shadow:0 18px 45px rgba(0,0,0,.6);
-      transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
-    }
-    .btn-primary:hover{
-      transform:translateY(-1px);
-      background:rgba(47,107,255,1);
-      box-shadow:0 22px 60px rgba(0,0,0,.75);
-    }
-    body[data-theme="yellow"] .btn-primary:hover{background:#ffd95b;}
-
-    .btn-ghost{
-      padding:.6rem 1.1rem;border-radius:999px;
-      border:1px solid rgba(255,255,255,.3);
-      background:rgba(5,5,12,.6);
-      color:var(--text-muted);font-size:.82rem;text-decoration:none;
-      display:inline-flex;align-items:center;gap:.35rem;
-      transition:background .15s ease,border-color .15s ease,color .15s ease;
-    }
-    .btn-ghost:hover{
-      background:rgba(5,5,12,.9);
-      border-color:rgba(255,255,255,.5);
-      color:var(--text-main);
+    .hero-content {
+      position: relative;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 3.5rem 1.4rem 3rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: flex-end;
+      z-index: 1;
     }
 
-    .hero-right{justify-self:flex-end;}
-    .hero-spec-card{
-      background:var(--card-bg-light);
-      border-radius:18px;
-      border:1px solid var(--card-border-light);
-      padding:1rem 1.1rem;
-      box-shadow:0 18px 45px rgba(0,0,0,.15);
-      font-size:.82rem;
-      display:grid;
-      gap:.4rem;
-      color:var(--card-text-main);
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
-    .spec-title{
-      font-size:.86rem;text-transform:uppercase;letter-spacing:.18em;
-      color:var(--card-text-muted);
-      margin-bottom:.2rem;
+
+    .project-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
     }
-    .spec-row{display:flex;justify-content:space-between;gap:.6rem;}
-    .spec-label{color:var(--card-text-muted);}
-    .spec-value{font-weight:600;}
+
+    .project-title {
+      font-size: 2.3rem;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+    }
+
+    .project-meta {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+    }
+
+    .project-tag {
+      font-size: 0.76rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(5,5,12,0.6);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text-muted);
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+      margin-top: 0.8rem;
+    }
+
+    .btn-primary {
+      padding: 0.65rem 1.3rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 0.86rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      background: rgba(47, 107, 255, 1);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.75);
+    }
+
+    body[data-theme="yellow"] .btn-primary:hover { background: #ffd95b; }
+
+    .btn-ghost {
+      padding: 0.6rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(5,5,12,0.6);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(5,5,12,0.9);
+      border-color: rgba(255,255,255,0.5);
+      color: var(--text-main);
+    }
+
+    .hero-right { justify-self: flex-end; }
+
+    .hero-spec-card {
+      background: var(--card-bg-light);
+      border-radius: 18px;
+      border: 1px solid var(--card-border-light);
+      padding: 1rem 1.1rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+      font-size: 0.82rem;
+      display: grid;
+      gap: 0.4rem;
+      color: var(--card-text-main);
+    }
+
+    .spec-title {
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--card-text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+
+    .spec-label { color: var(--card-text-muted); }
+    .spec-value { font-weight: 600; }
 
     /* MAIN */
-    main{
-      max-width:var(--max-width);
-      margin:0 auto;
-      padding:2.4rem 1.4rem 3rem;
-    }
-    .section-label{
-      font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;
-      color:var(--text-muted);
-      margin-bottom:.4rem;
-    }
-    .section-title{
-      font-size:1.3rem;
-      margin-bottom:.7rem;
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2.4rem 1.4rem 3rem;
     }
 
-    /* GALLERY */
-    .gallery{margin-top:1.8rem;}
-    .gallery-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem;}
-    .gallery-tab{
-      padding:.45rem .8rem;border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(5,5,12,.55);
-      color:var(--text-muted);
-      cursor:pointer;font-size:.78rem;
-      transition:background .15s ease,border-color .15s ease,color .15s ease;
+    .section-label {
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
     }
-    .gallery-tab:hover{
-      background:rgba(255,255,255,.06);
-      border-color:rgba(255,255,255,.30);
-      color:var(--text-main);
+
+    .section-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.7rem;
     }
-    .gallery-tab.is-active{
-      border-color:rgba(255,255,255,.40);
-      color:var(--text-main);
-      background:linear-gradient(to right, rgba(5,5,12,.65), rgba(5,5,12,.45));
-      box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+    /* WHY / HOW / RESULTS */
+    .whr-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.4rem;
     }
+
+    .whr-card {
+      background: var(--card-bg-light);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1rem 0.9rem;
+      border: 1px solid var(--card-border-light);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+      font-size: 0.86rem;
+      color: var(--card-text-main);
+    }
+
+    .whr-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, var(--accent-soft), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .whr-inner { position: relative; z-index: 1; }
+
+    .whr-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      color: var(--card-text-main);
+    }
+
+    .whr-card p { color: var(--card-text-muted); }
+
+    .whr-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(5,5,12,0.86);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* PROCESS */
+    .process-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 1rem;
+      margin-bottom: 2.0rem;
+    }
+
+    .process-card {
+      background: var(--card-bg-light);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--card-border-light);
+      padding: 1.1rem 1.1rem 1rem;
+      font-size: 0.85rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+      color: var(--card-text-muted);
+    }
+
+    .process-card h3 {
+      font-size: 0.96rem;
+      margin-bottom: 0.4rem;
+      color: var(--card-text-main);
+    }
+
+    .process-list {
+      padding-left: 1.1rem;
+      margin-top: 0.2rem;
+    }
+
+    .process-list li { margin-bottom: 0.18rem; }
+
+    /* GALLERY (simple) */
+    .gallery { margin-top: 2.2rem; }
 
     .gallery-grid{
-      display:grid;
-      grid-template-columns:repeat(12,1fr);
-      gap:.9rem;
-      margin-top:.8rem;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: .9rem;
+      margin-top: .8rem;
     }
+
     .gallery-item{
-      grid-column:span 4;
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:16px;
-      background:rgba(5,5,12,.55);
-      padding:0;
-      overflow:hidden;
-      cursor:pointer;
-      box-shadow:0 18px 45px rgba(0,0,0,.35);
-      transition:transform .15s ease,border-color .15s ease,background .15s ease;
+      grid-column: span 4;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      background: rgba(5,5,12,0.55);
+      padding: 0;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
     }
+
     .gallery-item:hover{
-      transform:translateY(-2px);
-      border-color:rgba(255,255,255,.22);
-      background:rgba(5,5,12,.70);
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(5,5,12,0.70);
     }
+
     .gallery-item img{
-      display:block;width:100%;height:210px;object-fit:cover;
+      display: block;
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
     }
 
-    /* LIGHTBOX */
+    /* Lightbox */
     .lightbox{
-      position:fixed;inset:0;
-      background:rgba(0,0,0,.85);
-      display:none;
-      place-items:center;
-      z-index:999;
-      padding:1.2rem;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      place-items: center;
+      z-index: 999;
+      padding: 1.2rem;
     }
-    .lightbox.is-open{display:grid;}
-    .lightbox img{
-      max-width:min(1100px,96vw);
-      max-height:86vh;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:0 30px 80px rgba(0,0,0,.6);
-    }
-    .lightbox-close{
-      position:absolute;top:16px;right:16px;
-      width:42px;height:42px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(5,5,12,.65);
-      color:var(--text-main);
-      cursor:pointer;
-      font-size:18px;
-    }
-    .lightbox-nav{
-      position:absolute;
-      top:50%;
-      transform:translateY(-50%);
-      width:44px;height:44px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.25);
-      background:rgba(5,5,12,.7);
-      color:white;
-      font-size:28px;
-      cursor:pointer;
-      display:grid;
-      place-items:center;
-      transition:background .15s ease,transform .15s ease;
-    }
-    .lightbox-nav:hover{
-      background:rgba(255,255,255,.12);
-      transform:translateY(-50%) scale(1.05);
-    }
-    .lightbox-nav.prev{left:20px;}
-    .lightbox-nav.next{right:20px;}
+    .lightbox.is-open{ display: grid; }
 
-    /* FOOTER */
-    .footer{
-      max-width:var(--max-width);
-      margin:0 auto;
-      padding:1.5rem 1.4rem 2.3rem;
-      font-size:.78rem;
-      color:var(--text-muted);
-      display:flex;
-      justify-content:space-between;
-      gap:.8rem;
-      border-top:1px solid rgba(255,255,255,.08);
+    .lightbox img{
+      max-width: min(1100px, 96vw);
+      max-height: 86vh;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
     }
-    .footer a{color:var(--text-muted);text-decoration:none;}
+
+    .lightbox-close{
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.65);
+      color: var(--text-main);
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(5,5,12,0.7);
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background .15s ease, transform .15s ease;
+    }
+
+    .lightbox-nav:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    .lightbox-nav.prev { left: 20px; }
+    .lightbox-nav.next { right: 20px; }
+
+    /* BACK LINK / FOOTER */
+    .back-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 0.8rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .footer {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1.5rem 1.4rem 2.3rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer a { color: var(--text-muted); text-decoration: none; }
 
     /* RESPONSIVE */
-    @media (max-width:900px){
-      .hero-content{grid-template-columns:minmax(0,1fr);padding-top:3rem;}
-      .hero-right{justify-self:stretch;}
-      .gallery-item{grid-column:span 6;}
+    @media (max-width: 900px) {
+      .hero-content { grid-template-columns: minmax(0, 1fr); padding-top: 3rem; }
+      .hero-right { justify-self: stretch; }
+      .whr-grid { grid-template-columns: minmax(0, 1fr); }
+      .process-grid { grid-template-columns: minmax(0, 1fr); }
+      .gallery-item{ grid-column: span 6; }
     }
-    @media (max-width:640px){
-      .nav-inner{padding-inline:.9rem;}
-      main{padding-inline:.9rem;}
-      .hero-content{padding-inline:.9rem;}
-      .nav-links{display:none;}
-      .gallery-item{grid-column:span 12;}
-      .gallery-item img{height:220px;}
-      .lightbox-nav{width:38px;height:38px;font-size:24px;}
+
+    @media (max-width: 640px) {
+      .nav-inner { padding-inline: 0.9rem; }
+      main { padding-inline: 0.9rem; }
+      .hero-content { padding-inline: 0.9rem; }
+      .nav-links { display: none; }
+
+      .gallery-item{ grid-column: span 12; }
+      .gallery-item img{ height: 220px; }
+
+      .lightbox-nav { width: 38px; height: 38px; font-size: 24px; }
     }
   </style>
 </head>
@@ -385,20 +622,22 @@
     <div class="hero-banner">
       <div class="hero-content">
         <div class="hero-left">
-          <div class="project-label">Project · Mechanical · Hands-on</div>
-          <h1 class="project-title">Project Title Here</h1>
+          <div class="project-label">Project · Powertrain · Hands-on</div>
+          <h1 class="project-title">Gasoline Engine Rebuild & Diagnostics</h1>
           <p class="project-meta">
-            Short description of the project. Keep it 1–2 lines: scope, purpose, and outcome.
+            Personal / training project focused on learning failure modes, good assembly practices and reliability thinking
+            by rebuilding a gasoline engine from teardown to testing.
           </p>
 
           <div class="project-tags">
-            <span class="project-tag">Tag 1</span>
-            <span class="project-tag">Tag 2</span>
-            <span class="project-tag">Tag 3</span>
+            <span class="project-tag">Engine teardown & inspection</span>
+            <span class="project-tag">Root cause & wear analysis</span>
+            <span class="project-tag">Assembly & torque discipline</span>
+            <span class="project-tag">Testing & validation</span>
           </div>
 
           <div class="hero-cta-row">
-            <a href="#details" class="btn-primary">See Details</a>
+            <a href="#details" class="btn-primary">See Why / How / Results</a>
             <a href="index.html#projects" class="btn-ghost">← Back to all projects</a>
           </div>
         </div>
@@ -408,19 +647,19 @@
             <div class="spec-title">Project specs</div>
             <div class="spec-row">
               <span class="spec-label">Type</span>
-              <span class="spec-value">Build / Design</span>
+              <span class="spec-value">IC engine rebuild</span>
             </div>
             <div class="spec-row">
-              <span class="spec-label">Tools</span>
-              <span class="spec-value">CAD · Test · Docs</span>
+              <span class="spec-label">Scope</span>
+              <span class="spec-value">Teardown → inspection → rebuild → test</span>
             </div>
             <div class="spec-row">
-              <span class="spec-label">Status</span>
-              <span class="spec-value">In progress</span>
+              <span class="spec-label">Focus</span>
+              <span class="spec-value">Reliability, discipline & learning</span>
             </div>
             <div class="spec-row">
-              <span class="spec-label">Year</span>
-              <span class="spec-value">2025</span>
+              <span class="spec-label">Skills</span>
+              <span class="spec-value">Mechanical · diagnostic · documentation</span>
             </div>
           </div>
         </div>
@@ -429,38 +668,105 @@
     </div>
   </div>
 
-  <!-- MAIN -->
+  <!-- MAIN CONTENT -->
   <main id="details">
-    <div class="section-label">Gallery</div>
-    <h2 class="section-title">Project Photos</h2>
+    <!-- WHY / HOW / RESULTS -->
+    <div class="section-label">Overview</div>
+    <h2 class="section-title">Why, how and what I got from this project</h2>
 
-    <!--
-      SIMPLE GALLERY (no stages):
-      - Leave data-stages empty or omit it.
-      - Lightbox still supports arrows + swipe.
-    -->
-    <section class="gallery" id="projectGallery" data-stages="">
-      <div class="gallery-tabs"></div>
+    <div class="whr-grid">
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Why</div>
+          <h3 class="whr-title">Go beyond “it runs”</h3>
+          <p>
+            I wanted to understand what actually happens inside an engine over time: how components wear, which mistakes
+            during assembly lead to failures and what good practices look like in real hardware, not just theory.
+          </p>
+        </div>
+      </article>
+
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">How</div>
+          <h3 class="whr-title">Structured teardown & rebuild</h3>
+          <p>
+            I performed a full teardown, cleaning and inspection of all components, documenting findings with photos,
+            measuring key parts where possible, replacing critical elements and reassembling the engine following torque
+            sequences and a disciplined workflow.
+          </p>
+        </div>
+      </article>
+
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Results</div>
+          <h3 class="whr-title">Reliable start & clear learnings</h3>
+          <p>
+            The engine ran again with reduced noise and more consistent behavior. More importantly, I left with a clearer
+            mental model of what “good assembly” means and a list of improvements for tooling, measurement and process for
+            the next build.
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <!-- PROCESS / LEARNINGS -->
+    <div class="process-grid">
+      <div class="process-card">
+        <h3>Process highlights</h3>
+        <ul class="process-list">
+          <li>Planned teardown with labeling and photo documentation.</li>
+          <li>Visual and basic dimensional inspection of key components.</li>
+          <li>Cleaning, degreasing and surface preparation before assembly.</li>
+          <li>Use of assembly lube, correct torque specs and sequences.</li>
+          <li>First start, leak checks and basic functional tests.</li>
+        </ul>
+      </div>
+      <div class="process-card">
+        <h3>Engineering takeaways</h3>
+        <ul class="process-list">
+          <li>Importance of cleanliness and organization in reliability.</li>
+          <li>How small assembly errors can create big future problems.</li>
+          <li>Better understanding of wear patterns and what they tell you.</li>
+          <li>How to document a build so it is useful as a portfolio piece.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GALLERY (simple, no stages) -->
+    <section class="gallery" aria-label="Project gallery">
+      <div class="section-label">Gallery</div>
+      <h2 class="section-title">Project Photos</h2>
 
       <div class="gallery-grid">
-        <!-- Replace with your real images -->
-        <button class="gallery-item" type="button" data-full="assets/img/project/photo-01.jpg">
-          <img src="assets/img/project/photo-01.jpg" alt="Project photo 1">
+        <!-- Replace these with your real images -->
+        <button class="gallery-item" type="button" data-full="assets/img/engine/teardown-01.jpg">
+          <img src="assets/img/engine/teardown-01.jpg" alt="Project photo 1">
         </button>
 
-        <button class="gallery-item" type="button" data-full="assets/img/project/photo-02.jpg">
-          <img src="assets/img/project/photo-02.jpg" alt="Project photo 2">
+        <button class="gallery-item" type="button" data-full="assets/img/engine/teardown-02.jpg">
+          <img src="assets/img/engine/teardown-02.jpg" alt="Project photo 2">
         </button>
 
-        <button class="gallery-item" type="button" data-full="assets/img/project/photo-03.jpg">
-          <img src="assets/img/project/photo-03.jpg" alt="Project photo 3">
+        <button class="gallery-item" type="button" data-full="assets/img/engine/inspection-01.jpg">
+          <img src="assets/img/engine/inspection-01.jpg" alt="Project photo 3">
         </button>
 
-        <button class="gallery-item" type="button" data-full="assets/img/project/photo-04.jpg">
-          <img src="assets/img/project/photo-04.jpg" alt="Project photo 4">
+        <button class="gallery-item" type="button" data-full="assets/img/engine/assembly-01.jpg">
+          <img src="assets/img/engine/assembly-01.jpg" alt="Project photo 4">
+        </button>
+
+        <button class="gallery-item" type="button" data-full="assets/img/engine/testing-01.jpg">
+          <img src="assets/img/engine/testing-01.jpg" alt="Project photo 5">
         </button>
       </div>
     </section>
+
+    <div class="back-row">
+      <a href="index.html#projects" class="back-link">← Back to all projects</a>
+      <span>Need a deeper technical breakdown? I can share more notes, photos and measurements on request.</span>
+    </div>
   </main>
 
   <!-- Lightbox -->
@@ -477,9 +783,7 @@
   </footer>
 
   <script>
-    // ---------------------------
     // THEME TOGGLE (Blue / Yellow)
-    // ---------------------------
     const themeBtn = document.getElementById("themeToggle");
     const themeLabel = themeBtn?.querySelector(".label");
 
@@ -504,138 +808,72 @@
       updateThemeLabel();
     });
 
-    // ---------------------------
-    // UNIVERSAL GALLERY (simple or staged)
-    // ---------------------------
-    const gallery = document.getElementById("projectGallery");
-    const gridItems = Array.from(document.querySelectorAll(".gallery-item"));
+    // SIMPLE GALLERY LIGHTBOX (arrows + keyboard + swipe)
+    const galleryItems = Array.from(document.querySelectorAll(".gallery-item"));
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const btnClose = document.getElementById("lightboxClose");
+    const btnPrev = document.getElementById("lightboxPrev");
+    const btnNext = document.getElementById("lightboxNext");
 
-    if (gallery) {
-      const raw = (gallery.getAttribute("data-stages") || "").trim();
+    let currentIndex = 0;
+    let startX = 0;
 
-      // Parse: "key:Label,key2:Label2"
-      const stages = raw
-        ? raw.split(",").map(s => s.trim()).filter(Boolean).map(pair => {
-            const [key, label] = pair.split(":").map(x => x.trim());
-            return { key, label: label || key };
-          })
-        : [];
+    function openLightbox(index){
+      currentIndex = index;
+      const full = galleryItems[currentIndex]?.dataset?.full;
+      if (!full) return;
 
-      let activeStage = stages.length ? stages[0].key : "all";
-      const tabsContainer = gallery.querySelector(".gallery-tabs");
-
-      // Build tabs dynamically (or hide if none)
-      if (tabsContainer) {
-        tabsContainer.innerHTML = "";
-        if (stages.length) {
-          stages.forEach((s, i) => {
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "gallery-tab" + (i === 0 ? " is-active" : "");
-            btn.dataset.stage = s.key;
-            btn.textContent = s.label;
-            tabsContainer.appendChild(btn);
-          });
-        } else {
-          tabsContainer.style.display = "none";
-        }
-      }
-
-      function setStage(stage){
-        activeStage = stage;
-        document.querySelectorAll(".gallery-tab").forEach(t => {
-          t.classList.toggle("is-active", t.dataset.stage === stage);
-        });
-
-        gridItems.forEach(item => {
-          if (!stages.length) {
-            item.hidden = false; // simple gallery
-            return;
-          }
-          item.hidden = (item.dataset.stage !== stage);
-        });
-      }
-
-      // tab listeners
-      document.querySelectorAll(".gallery-tab").forEach(tab => {
-        tab.addEventListener("click", () => setStage(tab.dataset.stage));
-      });
-
-      setStage(activeStage);
-
-      // ---------------------------
-      // LIGHTBOX (arrows + keyboard + swipe)
-      // ---------------------------
-      const lightbox = document.getElementById("lightbox");
-      const lightboxImg = document.getElementById("lightboxImg");
-      const btnClose = document.getElementById("lightboxClose");
-      const btnPrev = document.getElementById("lightboxPrev");
-      const btnNext = document.getElementById("lightboxNext");
-
-      let currentIndex = 0;
-      let startX = 0;
-
-      function currentStageItems(){
-        if (!stages.length) return gridItems;
-        return gridItems.filter(i => i.dataset.stage === activeStage);
-      }
-
-      function openLightbox(index){
-        const items = currentStageItems();
-        if (!items.length) return;
-        currentIndex = index;
-        lightboxImg.src = items[currentIndex].dataset.full;
-        lightbox.classList.add("is-open");
-        lightbox.setAttribute("aria-hidden", "false");
-      }
-
-      function closeLightbox(){
-        lightbox.classList.remove("is-open");
-        lightbox.setAttribute("aria-hidden", "true");
-        lightboxImg.src = "";
-      }
-
-      function showPrev(){
-        const items = currentStageItems();
-        if (!items.length) return;
-        currentIndex = (currentIndex - 1 + items.length) % items.length;
-        lightboxImg.src = items[currentIndex].dataset.full;
-      }
-
-      function showNext(){
-        const items = currentStageItems();
-        if (!items.length) return;
-        currentIndex = (currentIndex + 1) % items.length;
-        lightboxImg.src = items[currentIndex].dataset.full;
-      }
-
-      gridItems.forEach(item => {
-        item.addEventListener("click", () => {
-          const items = currentStageItems();
-          const idx = items.indexOf(item);
-          if (idx >= 0) openLightbox(idx);
-        });
-      });
-
-      btnClose?.addEventListener("click", closeLightbox);
-      btnPrev?.addEventListener("click", showPrev);
-      btnNext?.addEventListener("click", showNext);
-
-      lightbox?.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
-
-      window.addEventListener("keydown", (e) => {
-        if (!lightbox.classList.contains("is-open")) return;
-        if (e.key === "Escape") closeLightbox();
-        if (e.key === "ArrowLeft") showPrev();
-        if (e.key === "ArrowRight") showNext();
-      });
-
-      lightbox?.addEventListener("touchstart", (e) => startX = e.touches[0].clientX);
-      lightbox?.addEventListener("touchend", (e) => {
-        const diff = e.changedTouches[0].clientX - startX;
-        if (Math.abs(diff) > 50) diff > 0 ? showPrev() : showNext();
-      });
+      lightboxImg.src = full;
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
     }
+
+    function closeLightbox(){
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImg.src = "";
+    }
+
+    function showPrev(){
+      if (!galleryItems.length) return;
+      currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+      lightboxImg.src = galleryItems[currentIndex].dataset.full;
+    }
+
+    function showNext(){
+      if (!galleryItems.length) return;
+      currentIndex = (currentIndex + 1) % galleryItems.length;
+      lightboxImg.src = galleryItems[currentIndex].dataset.full;
+    }
+
+    galleryItems.forEach((item, index) => {
+      item.addEventListener("click", () => openLightbox(index));
+    });
+
+    btnClose?.addEventListener("click", closeLightbox);
+    btnPrev?.addEventListener("click", showPrev);
+    btnNext?.addEventListener("click", showNext);
+
+    lightbox?.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (!lightbox.classList.contains("is-open")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === "ArrowRight") showNext();
+    });
+
+    lightbox?.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    lightbox?.addEventListener("touchend", (e) => {
+      const diff = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diff) > 50) diff > 0 ? showPrev() : showNext();
+    });
   </script>
 </body>
 </html>
