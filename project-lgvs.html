@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LGV Systems Diagnostics & Commissioning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-body: #050509;
+      --text-main: #f5f5f5;
+      --text-muted: #b3b3c2;
+
+      /* THEME: default BLUE */
+      --accent: #1a3d7c;
+      --accent-soft: rgba(26, 61, 124, 0.20);
+
+      --card-bg: rgba(15, 17, 30, 0.9);
+      --border-soft: rgba(255,255,255,0.08);
+      --radius-lg: 18px;
+      --shadow-soft: 0 24px 60px rgba(0,0,0,0.65);
+      --max-width: 1100px;
+
+      /* LIGHT CARDS */
+      --card-bg-light: rgba(245, 246, 248, 0.92);
+      --card-border-light: rgba(0, 0, 0, 0.08);
+      --card-text-main: #1a1a1a;
+      --card-text-muted: #5f6368;
+    }
+
+    /* YELLOW THEME (toggle) */
+    body[data-theme="yellow"] {
+      --accent: #f2c230;
+      --accent-soft: rgba(242, 194, 48, 0.20);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(26, 61, 124, 0.35), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(26, 61, 124, 0.25), transparent 60%),
+        var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    /* Make background react to theme */
+    body[data-theme="yellow"] {
+      background:
+        radial-gradient(circle at top left, rgba(26, 61, 124, 0.35), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(242, 194, 48, 0.25), transparent 60%),
+        var(--bg-body);
+    }
+
+    a { color: inherit; }
+
+    /* NAV */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(5,5,12,0.92), rgba(5,5,12,0.65));
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.7rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(5,5,12,0.8);
+      flex: 0 0 auto;
+    }
+
+    .brand-text {
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 0 0 auto;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.82rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      padding: 0.25rem 0.4rem;
+      border-radius: 999px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255,255,255,0.04);
+      color: var(--text-main);
+    }
+
+    .tag-small {
+      font-size: 0.72rem;
+      padding: 0.24rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.7);
+      color: var(--text-muted);
+    }
+
+    /* THEME SWITCH UI */
+    .theme-toggle{
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .45rem .75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.6);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: .78rem;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .theme-toggle:hover{
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.35);
+      transform: translateY(-1px);
+    }
+    .theme-toggle .dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+    }
+
+    /* HERO */
+    .hero-wrapper {
+      position: relative;
+      min-height: 75vh;
+      margin-top: 3.1rem;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .hero-banner {
+      position: relative;
+      flex: 1;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .hero-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to top, rgba(5,5,12,0.9), rgba(5,5,12,0.4)),
+        url("https://github.com/PabloCruz18/pablocruz/blob/8d9760af60f4f354087794a43d086dcdc579bcae/subaruengine.jpg?raw=true");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: saturate(1.1);
+      transform: scale(1.02);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 3.5rem 1.4rem 3rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: flex-end;
+      z-index: 1;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .project-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .project-title {
+      font-size: 2.3rem;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+    }
+
+    .project-meta {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+    }
+
+    .project-tag {
+      font-size: 0.76rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(5,5,12,0.6);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text-muted);
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+      margin-top: 0.8rem;
+    }
+
+    .btn-primary {
+      padding: 0.65rem 1.3rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 0.86rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      background: rgba(47, 107, 255, 1);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.75);
+    }
+
+    /* keep hover yellow-friendly too */
+    body[data-theme="yellow"] .btn-primary:hover {
+      background: #ffd95b;
+    }
+
+    .btn-ghost {
+      padding: 0.6rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(5,5,12,0.6);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(5,5,12,0.9);
+      border-color: rgba(255,255,255,0.5);
+      color: var(--text-main);
+    }
+
+    .hero-right { justify-self: flex-end; }
+
+    /* Spec card as LIGHT card for consistency */
+    .hero-spec-card {
+      background: var(--card-bg-light);
+      border-radius: 18px;
+      border: 1px solid var(--card-border-light);
+      padding: 1rem 1.1rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+      font-size: 0.82rem;
+      display: grid;
+      gap: 0.4rem;
+      color: var(--card-text-main);
+    }
+
+    .spec-title {
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--card-text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+
+    .spec-label { color: var(--card-text-muted); }
+    .spec-value { font-weight: 600; }
+
+    /* MAIN */
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2.4rem 1.4rem 3rem;
+    }
+
+    .section-label {
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.7rem;
+    }
+
+    /* WHY / HOW / RESULTS */
+    .whr-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.4rem;
+    }
+
+    .whr-card {
+      background: var(--card-bg-light);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1rem 0.9rem;
+      border: 1px solid var(--card-border-light);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+      font-size: 0.86rem;
+      color: var(--card-text-main);
+    }
+
+    /* highlight uses theme */
+    .whr-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, var(--accent-soft), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .whr-inner { position: relative; z-index: 1; }
+
+    .whr-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      color: var(--card-text-main);
+    }
+
+    .whr-card p { color: var(--card-text-muted); }
+
+    .whr-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(5,5,12,0.86);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* PROCESS */
+    .process-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 1rem;
+      margin-bottom: 2.0rem;
+    }
+
+    .process-card {
+      background: var(--card-bg-light);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--card-border-light);
+      padding: 1.1rem 1.1rem 1rem;
+      font-size: 0.85rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+      color: var(--card-text-muted);
+    }
+
+    .process-card h3 {
+      font-size: 0.96rem;
+      margin-bottom: 0.4rem;
+      color: var(--card-text-main);
+    }
+
+    .process-list {
+      padding-left: 1.1rem;
+      margin-top: 0.2rem;
+    }
+
+    .process-list li { margin-bottom: 0.18rem; }
+
+    /* GALLERY */
+    .gallery { margin-top: 2.2rem; }
+
+    .gallery-grid{
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: .9rem;
+      margin-top: .8rem;
+    }
+
+    .gallery-item{
+      grid-column: span 4;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      background: rgba(5,5,12,0.55);
+      padding: 0;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    .gallery-item:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(5,5,12,0.70);
+    }
+
+    .gallery-item img{
+      display: block;
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      place-items: center;
+      z-index: 999;
+      padding: 1.2rem;
+    }
+    .lightbox.is-open{ display: grid; }
+
+    .lightbox img{
+      max-width: min(1100px, 96vw);
+      max-height: 86vh;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    }
+
+    .lightbox-close{
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.65);
+      color: var(--text-main);
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    /* BACK LINK / FOOTER */
+    .back-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 0.8rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .footer {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1.5rem 1.4rem 2.3rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-content {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 3rem;
+      }
+      .hero-right { justify-self: stretch; }
+      .whr-grid { grid-template-columns: minmax(0, 1fr); }
+      .process-grid { grid-template-columns: minmax(0, 1fr); }
+      .gallery-item{ grid-column: span 6; }
+    }
+
+    @media (max-width: 640px) {
+      .nav-inner { padding-inline: 0.9rem; }
+      main { padding-inline: 0.9rem; }
+      .hero-content { padding-inline: 0.9rem; }
+
+      .nav-links { display: none; }
+      .gallery-item{ grid-column: span 12; }
+      .gallery-item img{ height: 220px; }
+    }
+    /* Gallery tabs */
+    .gallery-tabs{
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: .6rem;
+    }
+    
+    .gallery-tab{
+      padding: .45rem .8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.55);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: .78rem;
+      transition: background .15s ease, border-color .15s ease, color .15s ease;
+    }
+    
+    .gallery-tab:hover{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.30);
+      color: var(--text-main);
+    }
+    
+    .gallery-tab.is-active{
+      border-color: rgba(255,255,255,0.40);
+      color: var(--text-main);
+      background: linear-gradient(to right, rgba(5,5,12,0.65), rgba(5,5,12,0.45));
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    }
+    /* LIGHTBOX NAV */
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(5,5,12,0.7);
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background .15s ease, transform .15s ease;
+    }
+    
+    .lightbox-nav:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-50%) scale(1.05);
+    }
+    
+    .lightbox-nav.prev { left: 20px; }
+    .lightbox-nav.next { right: 20px; }
+    
+    @media (max-width: 640px) {
+      .lightbox-nav {
+        width: 38px;
+        height: 38px;
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="index.html#top" class="brand">
+        <div class="brand-logo">PC</div>
+        <div class="brand-text">Pablo Cruz</div>
+      </a>
+
+      <div class="nav-right">
+        <nav class="nav-links">
+          <span class="tag-small">Project view</span>
+          <a href="index.html#projects">All projects</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Cambiar tema">
+          <span class="dot"></span>
+          <span class="label">Blue</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero-wrapper">
+    <div class="hero-banner">
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="project-label">Project · Powertrain Diagnostics · Precision Assembly</div>
+          <h1 class="project-title">LGV Systems Diagnostics & Commissioning</h1>
+          <p class="project-meta">
+            Field service and maintenance work on autonomous guided vehicles operating in industrial environments.
+            The project focused on diagnosing electrical, control, sensor, and communication issues, validating system
+            behavior, and restoring reliable operation under real production conditions.
+          </p>
+
+          <div class="project-tags">
+            <span class="project-tag">Field service troubleshooting</span>
+            <span class="project-tag">PLC-based systems (TwinCAT 2 & 3)</span>
+            <span class="project-tag">LiDAR & laser sensors (SICK)</span>
+            <span class="project-tag">Industrial communication & radio systems</span>
+            <span class="project-tag">Commissioning & system validation</span>
+          </div>
+
+          <div class="hero-cta-row">
+            <a href="#details" class="btn-primary">See Why / How / Results</a>
+            <a href="index.html#projects" class="btn-ghost">← Back to all projects</a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-spec-card">
+            <div class="spec-title">Project specs</div>
+            <div class="spec-row">
+              <span class="spec-label">Type</span>
+              <span class="spec-value">Field service & maintenance</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Scope</span>
+              <span class="spec-value">Teardown → inspection → rebuild → test</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Focus</span>
+              <span class="spec-value">Reliability, discipline & learning</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Skills</span>
+              <span class="spec-value">Mechanical · diagnostic · torque discipline · timing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main id="details">
+    <!-- WHY / HOW / RESULTS -->
+    <div class="section-label">Overview</div>
+    <h2 class="section-title">Why, how and what I got from this project</h2>
+
+    <div class="whr-grid">
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Why</div>
+          <h3 class="whr-title">Go beyond “it runs”</h3>
+          <p>
+            The goal was to fix an oil leak without “guessing parts.” I wanted to approach it like a field engineer: use
+            symptoms, fault codes, and inspection to narrow down the root cause. On the FB20, accessing sealing
+            surfaces and confirming the source required removing the cylinder heads, which turned the job into a full
+            top-end service.
+          </p>
+        </div>
+      </article>
+
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">How</div>
+          <h3 class="whr-title">Controlled teardown, timing, and rebuild</h3>
+          <p>
+            I documented and labeled hardware, removed the cylinder heads, cleaned and inspected sealing surfaces,
+            and serviced valves/combustion chamber deposits where accessible. During reassembly I followed torque
+            specs and sequences, used proper surface prep and new head gaskets, and verified cam/crank timing
+            alignment before first start.
+          </p>
+        </div>
+      </article>
+
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Results</div>
+          <h3 class="whr-title">Verified assembly + cleaner baseline</h3>
+          <p>
+            The engine returned to operation with a cleaner baseline: improved sealing behavior and more consistent
+            running after reassembly. Most importantly, I gained hands-on experience with a non-trivial boxer
+            architecture—timing procedures, torque discipline, and the type of documentation and verification
+            mindset required to avoid repeat failures.
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <!-- PROCESS / LEARNINGS -->
+    <div class="process-grid">
+      <div class="process-card">
+        <h3>Process highlights</h3>
+        <ul class="process-list">
+          <li>Diagnosed oil leak using symptoms + basic fault-code reading and inspection.</li>
+          <li>Structured teardown: labeling, bagging hardware, photo documentation.</li>
+          <li>Cylinder head removal on Subaru FB20 boxer configuration.</li>
+          <li>Cleaning and surface preparation before gasket installation.</li>
+          <li>Head gasket replacement with torque specs + sequence discipline.</li>
+          <li>Engine timing verification (cam/crank alignment) before first start</li>
+          <li>Post-assembly checks: leak inspection, idle behavior, and follow-up observation.</li>
+        </ul>
+      </div>
+      <div class="process-card">
+        <h3>Engineering takeaways</h3>
+        <ul class="process-list">
+          <li>How boxer packaging changes access, procedures, and failure risks.</li>
+          <li>Why cleanliness, surface prep, and torque sequence directly impact sealing reliability.</li>
+          <li>The importance of verification steps (timing marks, rotation checks) before startup.</li>
+          <li>Turning an unplanned scope expansion into a controlled process (documentation + checkpoints).</li>
+          <li>How to communicate a mechanical intervention like an engineering job: symptoms → hypotheses →
+          action → verification.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+    <section class="gallery" aria-label="Project gallery">
+      <div class="section-label">Gallery</div>
+      <h2 class="section-title">Project Photos</h2>
+    
+      <div class="gallery-tabs" role="tablist" aria-label="Gallery stages">
+        <button class="gallery-tab is-active" type="button" data-stage="teardown" role="tab">Teardown</button>
+        <button class="gallery-tab" type="button" data-stage="inspection" role="tab">Inspection</button>
+        <button class="gallery-tab" type="button" data-stage="assembly" role="tab">Assembly</button>
+        <button class="gallery-tab" type="button" data-stage="testing" role="tab">Testing</button>
+      </div>
+    
+      <div class="gallery-grid" data-gallery-grid>
+        <!-- TEARDOWN -->
+        <button class="gallery-item" type="button" data-stage="teardown" data-full="assets/img/engine/teardown-01.jpg">
+          <img src="assets/img/engine/teardown-01.jpg" alt="Teardown photo 1">
+        </button>
+        <button class="gallery-item" type="button" data-stage="teardown" data-full="assets/img/engine/teardown-02.jpg">
+          <img src="assets/img/engine/teardown-02.jpg" alt="Teardown photo 2">
+        </button>
+    
+        <!-- INSPECTION -->
+        <button class="gallery-item" type="button" data-stage="inspection" data-full="assets/img/engine/inspection-01.jpg" hidden>
+          <img src="assets/img/engine/inspection-01.jpg" alt="Inspection photo 1">
+        </button>
+        <button class="gallery-item" type="button" data-stage="inspection" data-full="assets/img/engine/inspection-02.jpg" hidden>
+          <img src="assets/img/engine/inspection-02.jpg" alt="Inspection photo 2">
+        </button>
+    
+        <!-- ASSEMBLY -->
+        <button class="gallery-item" type="button" data-stage="assembly" data-full="assets/img/engine/assembly-01.jpg" hidden>
+          <img src="assets/img/engine/assembly-01.jpg" alt="Assembly photo 1">
+        </button>
+    
+        <!-- TESTING -->
+        <button class="gallery-item" type="button" data-stage="testing" data-full="assets/img/engine/testing-01.jpg" hidden>
+          <img src="assets/img/engine/testing-01.jpg" alt="Testing photo 1">
+        </button>
+      </div>
+    </section>
+
+    <div class="back-row">
+      <a href="index.html#projects" class="back-link">← Back to all projects</a>
+      <span>Need a deeper technical breakdown? I can share more notes, photos and measurements on request.</span>
+    </div>
+  </main>
+
+  <!-- Lightbox --><!--
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose">✕</button>
+  
+    <button class="lightbox-nav prev" id="lightboxPrev">‹</button>
+    <img id="lightboxImg" alt="Expanded project photo">
+    <button class="lightbox-nav next" id="lightboxNext">›</button>
+  </div>-->
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+  
+    <button class="lightbox-nav prev" id="lightboxPrev">‹</button>
+    <img id="lightboxImg" alt="Expanded project photo">
+    <button class="lightbox-nav next" id="lightboxNext">›</button>
+  </div>
+
+  <footer class="footer">
+    <div>© Monte Cruz Engineering – Pablo Cruz</div>
+    <div><a href="index.html#contact">Contact</a></div>
+  </footer>
+
+  <script>
+    // ---------------------------
+    // THEME TOGGLE (Blue / Yellow)
+    // ---------------------------
+    const themeBtn = document.getElementById("themeToggle");
+    const themeLabel = themeBtn?.querySelector(".label");
+  
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "yellow") document.body.setAttribute("data-theme", "yellow");
+  
+    function updateThemeLabel(){
+      const t = document.body.getAttribute("data-theme") === "yellow" ? "Yellow" : "Blue";
+      if (themeLabel) themeLabel.textContent = t;
+    }
+    updateThemeLabel();
+  
+    themeBtn?.addEventListener("click", () => {
+      const isYellow = document.body.getAttribute("data-theme") === "yellow";
+      if (isYellow) {
+        document.body.removeAttribute("data-theme");
+        localStorage.setItem("theme", "blue");
+      } else {
+        document.body.setAttribute("data-theme", "yellow");
+        localStorage.setItem("theme", "yellow");
+      }
+      updateThemeLabel();
+    });
+  
+    // ---------------------------
+    // GALLERY STAGES (TABS)
+    // ---------------------------
+    const tabs = Array.from(document.querySelectorAll(".gallery-tab"));
+    const allItems = Array.from(document.querySelectorAll(".gallery-item"));
+    let activeStage = "teardown";
+  
+    function setStage(stage){
+      activeStage = stage;
+  
+      tabs.forEach(t => t.classList.toggle("is-active", t.dataset.stage === stage));
+  
+      allItems.forEach(item => {
+        item.hidden = (item.dataset.stage !== stage);
+      });
+    }
+  
+    tabs.forEach(tab => tab.addEventListener("click", () => setStage(tab.dataset.stage)));
+    setStage(activeStage);
+  
+    // ---------------------------
+    // LIGHTBOX (stage-aware) + arrows + keyboard + swipe
+    // ---------------------------
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const btnClose = document.getElementById("lightboxClose");
+    const btnPrev = document.getElementById("lightboxPrev");
+    const btnNext = document.getElementById("lightboxNext");
+  
+    let currentIndex = 0;
+    let startX = 0;
+  
+    function stageItems(){
+      return allItems.filter(i => i.dataset.stage === activeStage);
+    }
+  
+    function openLightbox(index){
+      const items = stageItems();
+      if (!items.length) return;
+  
+      currentIndex = index;
+      const full = items[currentIndex]?.dataset?.full;
+      if (!full) return;
+  
+      lightboxImg.src = full;
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+    }
+  
+    function closeLightbox(){
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImg.src = "";
+    }
+  
+    function showPrev(){
+      const items = stageItems();
+      if (!items.length) return;
+  
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      lightboxImg.src = items[currentIndex].dataset.full;
+    }
+  
+    function showNext(){
+      const items = stageItems();
+      if (!items.length) return;
+  
+      currentIndex = (currentIndex + 1) % items.length;
+      lightboxImg.src = items[currentIndex].dataset.full;
+    }
+  
+    // click on thumbnails
+    allItems.forEach(item => {
+      item.addEventListener("click", () => {
+        const items = stageItems();
+        const idx = items.indexOf(item);
+        if (idx >= 0) openLightbox(idx);
+      });
+    });
+  
+    // close / nav buttons
+    btnClose?.addEventListener("click", closeLightbox);
+    btnPrev?.addEventListener("click", showPrev);
+    btnNext?.addEventListener("click", showNext);
+  
+    // click outside image
+    lightbox?.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+  
+    // keyboard
+    window.addEventListener("keydown", (e) => {
+      if (!lightbox.classList.contains("is-open")) return;
+  
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === "ArrowRight") showNext();
+    });
+  
+    // swipe
+    lightbox?.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+    });
+  
+    lightbox?.addEventListener("touchend", (e) => {
+      const diff = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diff) > 50) diff > 0 ? showPrev() : showNext();
+    });
+  </script>
+</body>
+</html>
