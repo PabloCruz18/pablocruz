@@ -205,8 +205,108 @@
             Soon I’ll be sharing more detailed videos and breakdowns on my YouTube channel.
           </p>
         </div>
-
+        <!-- FILTER CHIPS -->
+        <div class="gallery-filters" role="tablist" aria-label="Media filters">
+          <button class="filter-chip active" type="button" data-filter="skills" role="tab" aria-selected="true">
+            Hands-on skills
+          </button>
+          <button class="filter-chip" type="button" data-filter="field" role="tab" aria-selected="false">
+            Field & work
+          </button>
+          <button class="filter-chip" type="button" data-filter="teams" role="tab" aria-selected="false">
+            Teams & travel
+          </button>
+        </div>
+        
+        <!-- MEDIA GRID -->
+        <div class="media-grid-gallery" id="mediaGallery">
+        
+          <!-- ===== HANDS-ON SKILLS ===== -->
+          <article class="media-card" data-cat="skills">
+            <div class="media-img-wrap">
+              <img src="URL_SKILL_WELD.jpg" alt="Welding practice">
+            </div>
+            <div class="media-caption">
+              <div class="media-title">Welding</div>
+              <div class="media-text">Brackets / small structures — clean setup and repeatable process.</div>
+            </div>
+          </article>
+        
+          <article class="media-card" data-cat="skills">
+            <div class="media-img-wrap">
+              <img src="URL_SKILL_ENGINE.jpg" alt="Engine work">
+            </div>
+            <div class="media-caption">
+              <div class="media-title">Engine work</div>
+              <div class="media-text">Teardown & inspection — labeling, measurements, organized workflow.</div>
+            </div>
+          </article>
+        
+          <article class="media-card" data-cat="skills">
+            <div class="media-img-wrap">
+              <img src="URL_SKILL_CAD.jpg" alt="CAD model">
+            </div>
+            <div class="media-caption">
+              <div class="media-title">CAD</div>
+              <div class="media-text">SolidWorks assemblies and components for real builds.</div>
+            </div>
+          </article>
+        
+          <!-- ===== FIELD / WORK EVIDENCE ===== -->
+          <article class="media-card" data-cat="field">
+            <div class="media-img-wrap">
+              <img src="URL_FIELD_ROBOT.jpg" alt="On-site troubleshooting">
+            </div>
+            <div class="media-caption">
+              <div class="media-title">On-site troubleshooting</div>
+              <div class="media-text">Sensors / automation diagnostics in real plant conditions.</div>
+            </div>
+          </article>
+        
+          <article class="media-card" data-cat="field">
+            <div class="media-img-wrap">
+              <img src="URL_FIELD_MAINT.jpg" alt="Mechanical maintenance">
+            </div>
+            <div class="media-caption">
+              <div class="media-title">Mechanical maintenance</div>
+              <div class="media-text">Hands-on repairs — verification after intervention.</div>
+            </div>
+          </article>
+        
+          <!-- ===== TEAMS & TRAVEL ===== -->
+          <article class="media-card" data-cat="teams">
+            <div class="media-img-wrap">
+              <img src="URL_TEAM_FSAE.jpg" alt="Formula SAE">
+            </div>
+            <div class="media-caption">
+              <div class="media-title">Formula SAE</div>
+              <div class="media-text">Engineering team member — build support & testing environment.</div>
+            </div>
+          </article>
+        
+          <article class="media-card" data-cat="teams">
+            <div class="media-img-wrap">
+              <img src="URL_TEAM_ELECTRATON.jpg" alt="Electraton">
+            </div>
+            <div class="media-caption">
+              <div class="media-title">Electratón</div>
+              <div class="media-text">EV team contribution — integration and collaboration.</div>
+            </div>
+          </article>
+        
+          <article class="media-card" data-cat="teams">
+            <div class="media-img-wrap">
+              <img src="URL_TRAVEL_AMS.jpg" alt="International experience">
+            </div>
+            <div class="media-caption">
+              <div class="media-title">International experience</div>
+              <div class="media-text">Training / travel — working across cultures and sites.</div>
+            </div>
+          </article>
+        
+        </div>
         <!-- tira horizontal de imágenes -->
+        <!--
         <div class="builds-strip">
           <article class="build-card">
             <div class="build-img-wrap">
@@ -235,7 +335,7 @@
             </div>
             <div class="build-caption">Workshop setup – tools, engines and parts ready for work.</div>
           </article>
-        </div>
+        </div> -->
 
         <!-- bloque para futuro video de YouTube -->
         <div class="media-grid">
@@ -465,3 +565,29 @@
     </div>
   </footer>
 </div>
+<script>
+  (function(){
+    const chips = document.querySelectorAll('.filter-chip');
+    const cards = document.querySelectorAll('.media-card');
+
+    function setFilter(filter){
+      chips.forEach(c => {
+        const isActive = c.dataset.filter === filter;
+        c.classList.toggle('active', isActive);
+        c.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      cards.forEach(card => {
+        const show = card.dataset.cat === filter;
+        card.style.display = show ? '' : 'none';
+      });
+    }
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => setFilter(chip.dataset.filter));
+    });
+
+    // default
+    setFilter('skills');
+  })();
+</script>
