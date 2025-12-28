@@ -226,14 +226,14 @@
         
           <!-- SKILLS -->
           <article class="build-card" data-cat="skills">
-            <div class="build-img-wrap">
+            <div class="build-img-wrap img-hover-wrap">
               <img src="assets/img/projects/solar-panel-75w/solarpanel-soldering2.jpg" alt="Welding">
             </div>
             <div class="build-caption">Welding / fabrication – brackets and small structures.</div>
           </article>
         
           <article class="build-card" data-cat="skills">
-            <div class="build-img-wrap">
+            <div class="build-img-wrap img-hover-wrap">
               <img src="subaruengine.jpg" alt="Engine work">
             </div>
             <div class="build-caption">Engine work – teardown, inspection and organized workflow.</div>
@@ -241,7 +241,7 @@
         
           <!-- FIELD -->
           <article class="build-card" data-cat="field">
-            <div class="build-img-wrap">
+            <div class="build-img-wrap img-hover-wrap">
               <img src="assets/img/projects/Hydraulics/hydraulics-01.jpg" alt="Field troubleshooting">
             </div>
             <div class="build-caption">Field troubleshooting – diagnostics and verification.</div>
@@ -249,7 +249,7 @@
         
           <!-- TEAMS -->
           <article class="build-card" data-cat="teams">
-            <div class="build-img-wrap">
+            <div class="build-img-wrap img-hover-wrap">
               <img src="tecracing.jpg" alt="Team participation">
             </div>
             <div class="build-caption">Team participation – competition / build environment.</div>
@@ -257,7 +257,7 @@
         
           <!-- TRAVEL -->
           <article class="build-card" data-cat="teams">
-            <div class="build-img-wrap">
+            <div class="build-img-wrap img-hover-wrap">
               <img src="assets/img/projects/solar-panel-75w/solarpanel-soldering2.jpg" alt="International experience">
             </div>
             <div class="build-caption">International experience – site exposure and adaptability.</div>
@@ -526,27 +526,29 @@
 </div>
 <script>
   (function(){
-    const chips = document.querySelectorAll('.filter-chip');
-    const cards = document.querySelectorAll('.media-card');
+    const gallery = document.querySelector('#gallery');
+    if(!gallery) return;
+
+    const chips = gallery.querySelectorAll('.filter-chip');
+    const cards = gallery.querySelectorAll('.build-card');
 
     function setFilter(filter){
       chips.forEach(c => {
-        const isActive = c.dataset.filter === filter;
-        c.classList.toggle('active', isActive);
-        c.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        const active = c.dataset.filter === filter;
+        c.classList.toggle('active', active);
+        c.setAttribute('aria-selected', active ? 'true' : 'false');
       });
 
       cards.forEach(card => {
-        const show = card.dataset.cat === filter;
+        const cat = card.dataset.cat;
+        const show = (filter === 'all') || (cat === filter);
         card.style.display = show ? '' : 'none';
       });
     }
 
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => setFilter(chip.dataset.filter));
-    });
+    chips.forEach(chip => chip.addEventListener('click', () => setFilter(chip.dataset.filter)));
 
     // default
-    setFilter('skills');
+    setFilter('all');
   })();
 </script>
