@@ -686,28 +686,46 @@
     max-width: 26rem;
   }
   
+  /* Gallery filter chips */
   #gallery .gallery-filters{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin: 14px 0 16px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin: 14px 0 16px;
   }
   
+  /* default chip */
   #gallery .filter-chip{
     appearance:none;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.05);
-    color: var(--text-muted);
+    border: 1px solid rgba(0,0,0,0.14);
+    background: rgba(0,0,0,0.04);
+    color: #2b2f3a;              /* <- más oscuro para que se lea */
     padding: 10px 12px;
     border-radius: 999px;
     cursor:pointer;
-    font-weight: 600;
-    transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    font-weight: 650;
+    line-height: 1;
+    transition: transform .12s ease, border-color .12s ease, background .12s ease, box-shadow .12s ease;
   }
   
   #gallery .filter-chip:hover{
     transform: translateY(-1px);
-    border-color: rgba(255,255,255,0.18);
+    border-color: rgba(0,0,0,0.22);
+    background: rgba(0,0,0,0.06);
+  }
+  
+  /* SELECTED / ACTIVE (resaltado fuerte) */
+  #gallery .filter-chip.active{
+    color: #0b0d12;                         /* <- asegura legibilidad */
+    background: rgba(27, 75, 155, 0.12);    /* <- usa tu accent-blue */
+    border-color: rgba(27, 75, 155, 0.55);
+    box-shadow: 0 10px 22px rgba(27, 75, 155, 0.18);
+  }
+  
+  /* accesibilidad / teclado */
+  #gallery .filter-chip:focus-visible{
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(27, 75, 155, 0.25), 0 10px 22px rgba(27, 75, 155, 0.18);
   }
   
   #gallery .filter-chip.active{
