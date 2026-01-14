@@ -839,6 +839,15 @@
     }
   }
 
+  .thumb-video{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 12px; /* o el mismo radio que uses en thumbnails */
+    pointer-events: none; /* importante: el click lo maneja el botón */
+  }
+
   /* EXPERIENCE */
 
   .experience-list {
