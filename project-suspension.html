@@ -832,6 +832,20 @@
         <button class="gallery-item" type="button" data-stage="assembly" data-full="assets/img/engine/assembly-01.jpg" hidden>
           <img src="assets/img/projects/subaruengine/engine-withoutLHhead.jpg" alt="Assembly photo 1">
         </button>
+        <!-- ASSEMBLY (TIMELAPSE VIDEO) -->
+        <button
+          class="gallery-item"
+          type="button"
+          data-stage="assembly"
+          data-type="video"
+          data-full="assets/img/projects/subaruengine/assemblysubaru.mp4"
+          hidden
+        >
+          <video class="thumb-video" autoplay loop muted playsinline preload="metadata">
+            <source src="assets/img/projects/subaruengine/assemblysubaru.mp4" type="video/mp4">
+          </video>
+        </button>
+
     
         <!-- TESTING -->
         <button class="gallery-item" type="button" data-stage="testing" data-full="assets/img/engine/testing-01.jpg" hidden>
@@ -863,6 +877,10 @@
   
     <button class="lightbox-nav prev" id="lightboxPrev">‹</button>
     <img id="lightboxImg" alt="Expanded project photo">
+    <!-- NEW: Lightbox video -->
+    <video id="lightboxVideo" controls playsinline style="display:none; max-width: 100%; max-height: 80vh;">
+      <source id="lightboxVideoSrc" src="" type="video/mp4">
+    </video>
     <button class="lightbox-nav next" id="lightboxNext">›</button>
   </div>
 
@@ -927,6 +945,8 @@
     const btnClose = document.getElementById("lightboxClose");
     const btnPrev = document.getElementById("lightboxPrev");
     const btnNext = document.getElementById("lightboxNext");
+    const lightboxVideo = document.getElementById("lightboxVideo");
+    const lightboxVideoSrc = document.getElementById("lightboxVideoSrc");
   
     let currentIndex = 0;
     let startX = 0;
@@ -938,36 +958,60 @@
     function openLightbox(index){
       const items = stageItems();
       if (!items.length) return;
-  
+    
       currentIndex = index;
-      const full = items[currentIndex]?.dataset?.full;
+      const item = items[currentIndex];
+      const full = item?.dataset?.full;
+      const type = item?.dataset?.type || "image";
       if (!full) return;
-  
-      lightboxImg.src = full;
+    
+      if (type === "video") {
+        // show video, hide image
+        lightboxImg.style.display = "none";
+        lightboxImg.src = "";
+    
+        lightboxVideo.style.display = "block";
+        lightboxVideoSrc.src = full;
+        lightboxVideo.load();
+        lightboxVideo.play().catch(() => {});
+      } else {
+        // show image, hide video
+        lightboxVideo.pause();
+        lightboxVideo.style.display = "none";
+        lightboxVideoSrc.src = "";
+    
+        lightboxImg.style.display = "block";
+        lightboxImg.src = full;
+      }
+    
       lightbox.classList.add("is-open");
       lightbox.setAttribute("aria-hidden", "false");
     }
-  
     function closeLightbox(){
       lightbox.classList.remove("is-open");
       lightbox.setAttribute("aria-hidden", "true");
+    
       lightboxImg.src = "";
+    
+      lightboxVideo.pause();
+      lightboxVideo.style.display = "none";
+      lightboxVideoSrc.src = "";
     }
   
     function showPrev(){
       const items = stageItems();
       if (!items.length) return;
-  
+    
       currentIndex = (currentIndex - 1 + items.length) % items.length;
-      lightboxImg.src = items[currentIndex].dataset.full;
+      openLightbox(currentIndex);
     }
-  
+    
     function showNext(){
       const items = stageItems();
       if (!items.length) return;
-  
+    
       currentIndex = (currentIndex + 1) % items.length;
-      lightboxImg.src = items[currentIndex].dataset.full;
+      openLightbox(currentIndex);
     }
   
     // click on thumbnails
