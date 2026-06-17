@@ -9,6 +9,7 @@
       --bg-body: #050509;
       --text-main: #f5f5f5;
       --text-muted: #b3b3c2;
+      
 
       /* THEME: default BLUE */
       --accent: #1a3d7c;
@@ -454,6 +455,18 @@
     .process-list li { margin-bottom: 0.18rem; }
 
     /* GALLERY */
+    <style>
+    .gallery-caption {
+      display: block;
+      padding: 0.65rem 0.75rem 0.75rem;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      color: var(--text-muted);
+      text-align: left;
+      background: rgba(5,5,12,0.72);
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
     .gallery { margin-top: 2.2rem; }
 
     .gallery-grid{
@@ -681,7 +694,7 @@
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO --
   <div class="hero-wrapper">
     <div class="hero-banner">
       <div class="hero-content">
@@ -732,116 +745,255 @@
         </div>
       </div>
     </div>
+  </div> -->
+    <!-- HERO -->
+  <div class="hero-wrapper">
+    <div class="hero-banner">
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="project-label">Project · Engine Diagnostics · Mechanical Assembly</div>
+  
+          <h1 class="project-title">Subaru FB20 Engine Rebuild & Diagnostics</h1>
+  
+          <p class="project-meta">
+            Personal hands-on engineering project on a 2017 Subaru Impreza with an FB20 boxer engine.
+            The work started from an oil leak / engine sealing issue and required engine disassembly,
+            cylinder head removal, valve and head cleaning, head gasket replacement, timing chain installation,
+            torque-controlled reassembly, diagnostic checking, and successful startup.
+          </p>
+  
+          <div class="project-tags">
+            <span class="project-tag">Oil leak diagnosis</span>
+            <span class="project-tag">Mechanical teardown</span>
+            <span class="project-tag">Cylinder head removal</span>
+            <span class="project-tag">Head gasket replacement</span>
+            <span class="project-tag">Torque procedure</span>
+            <span class="project-tag">Timing alignment</span>
+            <span class="project-tag">Startup validation</span>
+          </div>
+  
+          <div class="hero-cta-row">
+            <a href="#details" class="btn-primary">View engineering process</a>
+            <a href="index.html#projects" class="btn-ghost">← Back to all projects</a>
+          </div>
+        </div>
+  
+        <div class="hero-right">
+          <div class="hero-spec-card">
+            <div class="spec-title">Project snapshot</div>
+  
+            <div class="spec-row">
+              <span class="spec-label">Vehicle</span>
+              <span class="spec-value">2017 Subaru Impreza</span>
+            </div>
+  
+            <div class="spec-row">
+              <span class="spec-label">Engine</span>
+              <span class="spec-value">FB20 boxer engine</span>
+            </div>
+  
+            <div class="spec-row">
+              <span class="spec-label">Issue</span>
+              <span class="spec-value">Oil leak / sealing problem</span>
+            </div>
+  
+            <div class="spec-row">
+              <span class="spec-label">Scope</span>
+              <span class="spec-value">Disassembly → inspection → reassembly → startup</span>
+            </div>
+  
+            <div class="spec-row">
+              <span class="spec-label">Role</span>
+              <span class="spec-value">Personal hands-on project</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
   <!-- MAIN CONTENT -->
   <main id="details">
-    <!-- WHY / HOW / RESULTS -->
+  
+    <!-- PROJECT SNAPSHOT / PROBLEM / ROLE -->
     <div class="section-label">Overview</div>
-    <h2 class="section-title">Why, how and what I got from this project</h2>
-
+    <h2 class="section-title">Project snapshot, problem and role</h2>
+  
     <div class="whr-grid">
       <article class="whr-card">
         <div class="whr-inner">
-          <div class="whr-tag">Why</div>
-          <h3 class="whr-title">Go beyond “it runs”</h3>
+          <div class="whr-tag">Problem</div>
+          <h3 class="whr-title">Oil leak / engine sealing issue</h3>
           <p>
-            The goal was to fix an oil leak without “guessing parts.” I wanted to approach it like a field engineer: use
-            symptoms, fault codes, and inspection to narrow down the root cause. On the FB20, accessing sealing
-            surfaces and confirming the source required removing the cylinder heads, which turned the job into a full
-            top-end service.
+            The vehicle presented an oil leak / sealing issue that required more than a superficial repair.
+            The project focused on understanding the mechanical condition, accessing the affected sealing areas,
+            and rebuilding the top-end assembly with careful attention to cleanliness, alignment, and torque procedure.
           </p>
         </div>
       </article>
-
+  
       <article class="whr-card">
         <div class="whr-inner">
-          <div class="whr-tag">How</div>
-          <h3 class="whr-title">Controlled teardown, timing, and rebuild</h3>
+          <div class="whr-tag">My role</div>
+          <h3 class="whr-title">Hands-on mechanical execution</h3>
           <p>
-            I documented and labeled hardware, removed the cylinder heads, cleaned and inspected sealing surfaces,
-            and serviced valves/combustion chamber deposits where accessible. During reassembly I followed torque
-            specs and sequences, used proper surface prep and new head gaskets, and verified cam/crank timing
-            alignment before first start.
+            I performed the hands-on work as a personal engineering project: engine disassembly, cylinder head removal,
+            valve and head cleaning, head gasket replacement, timing chain installation, torque-controlled reassembly,
+            diagnostic checking, and startup verification.
           </p>
         </div>
       </article>
-
+  
       <article class="whr-card">
         <div class="whr-inner">
-          <div class="whr-tag">Results</div>
-          <h3 class="whr-title">Verified assembly + cleaner baseline</h3>
+          <div class="whr-tag">Recruiter relevance</div>
+          <h3 class="whr-title">Evidence of mechanical discipline</h3>
           <p>
-            The engine returned to operation with a cleaner baseline: improved sealing behavior and more consistent
-            running after reassembly. Most importantly, I gained hands-on experience with a non-trivial boxer
-            architecture—timing procedures, torque discipline, and the type of documentation and verification
-            mindset required to avoid repeat failures.
+            This project demonstrates practical mechanical troubleshooting, structured teardown, assembly discipline,
+            documentation habits, and validation thinking. It is not presented as professional automotive employment,
+            but as evidence of hands-on engineering capability.
           </p>
         </div>
       </article>
     </div>
-
-    <!-- PROCESS / LEARNINGS -->
+  
+    <!-- ENGINEERING PROCESS -->
+    <div class="section-label">Engineering process</div>
+    <h2 class="section-title">From symptom to verified startup</h2>
+  
     <div class="process-grid">
       <div class="process-card">
-        <h3>Process highlights</h3>
+        <h3>Process followed</h3>
         <ul class="process-list">
-          <li>Diagnosed oil leak using symptoms + basic fault-code reading and inspection.</li>
-          <li>Structured teardown: labeling, bagging hardware, photo documentation.</li>
-          <li>Cylinder head removal on Subaru FB20 boxer configuration.</li>
-          <li>Cleaning and surface preparation before gasket installation.</li>
-          <li>Head gasket replacement with torque specs + sequence discipline.</li>
-          <li>Engine timing verification (cam/crank alignment) before first start</li>
-          <li>Post-assembly checks: leak inspection, idle behavior, and follow-up observation.</li>
+          <li>Started from the visible symptom: oil leak / engine sealing issue.</li>
+          <li>Performed diagnostic checking and visual inspection before expanding the repair scope.</li>
+          <li>Disassembled the engine components required to access the cylinder heads.</li>
+          <li>Removed the cylinder heads on the FB20 boxer engine configuration.</li>
+          <li>Cleaned cylinder heads, valves, and accessible sealing surfaces before reassembly.</li>
+          <li>Replaced the head gaskets and prepared the engine for controlled reassembly.</li>
+          <li>Installed the timing chain and verified cam/crank timing alignment before startup.</li>
+          <li>Used torque procedure discipline during reassembly to reduce the risk of repeat sealing issues.</li>
+          <li>Completed reassembly, diagnostic checking, and successful startup.</li>
         </ul>
       </div>
+  
       <div class="process-card">
-        <h3>Engineering takeaways</h3>
+        <h3>Engineering focus</h3>
         <ul class="process-list">
-          <li>How boxer packaging changes access, procedures, and failure risks.</li>
-          <li>Why cleanliness, surface prep, and torque sequence directly impact sealing reliability.</li>
-          <li>The importance of verification steps (timing marks, rotation checks) before startup.</li>
-          <li>Turning an unplanned scope expansion into a controlled process (documentation + checkpoints).</li>
-          <li>How to communicate a mechanical intervention like an engineering job: symptoms → hypotheses →
-          action → verification.</li>
+          <li>Root-cause-oriented troubleshooting instead of replacing parts blindly.</li>
+          <li>Cleanliness and surface preparation for sealing reliability.</li>
+          <li>Fastener control, torque sequence discipline, and assembly verification.</li>
+          <li>Timing alignment as a critical pre-start validation step.</li>
+          <li>Documentation through photos and staged work progress.</li>
+          <li>Translating a personal mechanical project into engineering evidence.</li>
         </ul>
       </div>
     </div>
-
+  
+    <!-- RESULTS / VALIDATION -->
+    <div class="section-label">Results / validation</div>
+    <h2 class="section-title">What was verified</h2>
+  
+    <div class="whr-grid">
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Result</div>
+          <h3 class="whr-title">Successful reassembly and startup</h3>
+          <p>
+            The engine was reassembled after cylinder head service, head gasket replacement, timing chain installation,
+            and torque-controlled assembly. The engine started successfully after the intervention.
+          </p>
+        </div>
+      </article>
+  
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Validation</div>
+          <h3 class="whr-title">Post-assembly checks</h3>
+          <p>
+            Validation was limited to practical post-assembly checks: diagnostic checking, startup behavior,
+            visual inspection, and follow-up observation. No performance numbers or measured before/after data are claimed.
+          </p>
+        </div>
+      </article>
+  
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Learning</div>
+          <h3 class="whr-title">Applicable engineering habits</h3>
+          <p>
+            The main value was not only the repair itself, but the process: controlled teardown, careful inspection,
+            mechanical cleanliness, torque discipline, timing verification, and clear documentation of the work performed.
+          </p>
+        </div>
+      </article>
+    </div>
+  
     <!-- GALLERY -->
     <section class="gallery" aria-label="Project gallery">
       <div class="section-label">Gallery</div>
-      <h2 class="section-title">Project Photos</h2>
-    
+      <h2 class="section-title">Project evidence by stage</h2>
+  
       <div class="gallery-tabs" role="tablist" aria-label="Gallery stages">
         <button class="gallery-tab is-active" type="button" data-stage="teardown" role="tab">Teardown</button>
         <button class="gallery-tab" type="button" data-stage="inspection" role="tab">Inspection</button>
         <button class="gallery-tab" type="button" data-stage="assembly" role="tab">Assembly</button>
         <button class="gallery-tab" type="button" data-stage="testing" role="tab">Testing</button>
       </div>
-    
+  
       <div class="gallery-grid" data-gallery-grid>
+  
         <!-- TEARDOWN -->
         <button class="gallery-item" type="button" data-stage="teardown" data-full="assets/img/projects/subaruengine/camshaft-cover.jpg">
-          <img src="assets/img/projects/subaruengine/camshaft-cover.jpg" alt="Teardown photo 1">
+          <img src="assets/img/projects/subaruengine/camshaft-cover.jpg" alt="Subaru FB20 camshaft cover removed during engine teardown">
+          <span class="gallery-caption">Camshaft cover removed during teardown to access upper engine components.</span>
         </button>
+  
         <button class="gallery-item" type="button" data-stage="teardown" data-full="assets/img/projects/subaruengine/engine-intable.jpg">
-          <img src="assets/img/projects/subaruengine/engine-intable.jpg" alt="Teardown photo 2">
+          <img src="assets/img/projects/subaruengine/engine-intable.jpg" alt="Subaru FB20 engine positioned on work table during disassembly">
+          <span class="gallery-caption">Engine positioned for controlled disassembly and documentation of component layout.</span>
         </button>
-    
+  
+        <!-- TODO: Upload missing image: wide shot of engine bay before removal or before disassembly -->
+        <!--
+        <button class="gallery-item" type="button" data-stage="teardown" data-full="assets/img/projects/subaruengine/before-disassembly.jpg">
+          <img src="assets/img/projects/subaruengine/before-disassembly.jpg" alt="Subaru Impreza engine bay before FB20 disassembly">
+          <span class="gallery-caption">Initial engine bay condition before disassembly and access work.</span>
+        </button>
+        -->
+  
         <!-- INSPECTION -->
         <button class="gallery-item" type="button" data-stage="inspection" data-full="assets/img/projects/subaruengine/f0922e39-37b9-40fa-8e87-118ee680f5ff.jpg" hidden>
-          <img src="assets/img/projects/subaruengine/f0922e39-37b9-40fa-8e87-118ee680f5ff.jpg" alt="Inspection photo 1">
+          <img src="assets/img/projects/subaruengine/f0922e39-37b9-40fa-8e87-118ee680f5ff.jpg" alt="Subaru FB20 cylinder head and sealing surface inspection">
+          <span class="gallery-caption">Cylinder head / sealing area inspection before cleaning and gasket replacement.</span>
         </button>
+  
         <button class="gallery-item" type="button" data-stage="inspection" data-full="assets/img/projects/subaruengine/assembly-engine-pablo.jpg" hidden>
-          <img src="assets/img/projects/subaruengine/assembly-engine-pablo.jpg" alt="Inspection photo 2">
+          <img src="assets/img/projects/subaruengine/assembly-engine-pablo.jpg" alt="Hands-on inspection and preparation during Subaru FB20 engine service">
+          <span class="gallery-caption">Hands-on inspection and preparation during the top-end service process.</span>
         </button>
-    
+  
+        <!-- TODO: Upload missing image: close-up of cleaned valves or cylinder head surface -->
+        <!--
+        <button class="gallery-item" type="button" data-stage="inspection" data-full="assets/img/projects/subaruengine/cleaned-cylinder-head.jpg" hidden>
+          <img src="assets/img/projects/subaruengine/cleaned-cylinder-head.jpg" alt="Cleaned Subaru FB20 cylinder head and valve area">
+          <span class="gallery-caption">Cleaned cylinder head and valve area prepared for reassembly.</span>
+        </button>
+        -->
+  
+        <!-- TODO: Upload missing image: old gasket or sealing surface condition -->
+        <!--
+        <button class="gallery-item" type="button" data-stage="inspection" data-full="assets/img/projects/subaruengine/head-gasket-inspection.jpg" hidden>
+          <img src="assets/img/projects/subaruengine/head-gasket-inspection.jpg" alt="Subaru FB20 head gasket and sealing surface condition during inspection">
+          <span class="gallery-caption">Head gasket and sealing surface condition reviewed before replacement.</span>
+        </button>
+        -->
+  
         <!-- ASSEMBLY -->
         <button class="gallery-item" type="button" data-stage="assembly" data-full="assets/img/projects/subaruengine/engine-withoutLHhead.jpg" hidden>
-          <img src="assets/img/projects/subaruengine/engine-withoutLHhead.jpg" alt="Assembly photo 1">
+          <img src="assets/img/projects/subaruengine/engine-withoutLHhead.jpg" alt="Subaru FB20 engine with left cylinder head removed during service">
+          <span class="gallery-caption">Cylinder head removed, showing the access required for the top-end service.</span>
         </button>
-        <!-- ASSEMBLY (TIMELAPSE VIDEO) -->
+  
         <button
           class="gallery-item"
           type="button"
@@ -853,22 +1005,90 @@
           <video class="thumb-video" autoplay loop muted playsinline preload="metadata">
             <source src="assets/img/projects/subaruengine/assemblysubaru.mp4" type="video/mp4">
           </video>
+          <span class="gallery-caption">Assembly timelapse showing the staged rebuild process.</span>
         </button>
-
-    
+  
+        <!-- TODO: Upload missing image: timing chain installed with timing marks visible -->
+        <!--
+        <button class="gallery-item" type="button" data-stage="assembly" data-full="assets/img/projects/subaruengine/timing-chain-alignment.jpg" hidden>
+          <img src="assets/img/projects/subaruengine/timing-chain-alignment.jpg" alt="Subaru FB20 timing chain installed with cam and crank alignment marks">
+          <span class="gallery-caption">Timing chain installed and alignment marks checked before startup.</span>
+        </button>
+        -->
+  
+        <!-- TODO: Upload missing image: torque procedure / head bolt sequence setup -->
+        <!--
+        <button class="gallery-item" type="button" data-stage="assembly" data-full="assets/img/projects/subaruengine/torque-procedure.jpg" hidden>
+          <img src="assets/img/projects/subaruengine/torque-procedure.jpg" alt="Torque-controlled reassembly during Subaru FB20 head gasket replacement">
+          <span class="gallery-caption">Torque-controlled reassembly following the required tightening sequence.</span>
+        </button>
+        -->
+  
         <!-- TESTING -->
         <button class="gallery-item" type="button" data-stage="testing" data-full="assets/img/projects/subaruengine/installing-engine.jpg" hidden>
-          <img src="assets/img/projects/subaruengine/installing-engine.jpg" alt="Testing photo 1">
+          <img src="assets/img/projects/subaruengine/installing-engine.jpg" alt="Subaru FB20 engine installation after reassembly">
+          <span class="gallery-caption">Engine installation after reassembly and preparation for startup checks.</span>
         </button>
+  
         <button class="gallery-item" type="button" data-stage="testing" data-full="assets/img/projects/subaruengine/intalling-engine2.jpg" hidden>
-          <img src="assets/img/projects/subaruengine/intalling-engine2.jpg" alt="Testing photo 1">
+          <img src="assets/img/projects/subaruengine/intalling-engine2.jpg" alt="Subaru FB20 engine reinstalled for post-assembly validation">
+          <span class="gallery-caption">Reinstalled engine ready for diagnostic checking, startup, and follow-up inspection.</span>
         </button>
+  
+        <!-- TODO: Upload missing image or short video: successful startup / engine running after reassembly -->
+        <!--
+        <button
+          class="gallery-item"
+          type="button"
+          data-stage="testing"
+          data-type="video"
+          data-full="assets/img/projects/subaruengine/successful-startup.mp4"
+          hidden
+        >
+          <video class="thumb-video" autoplay loop muted playsinline preload="metadata">
+            <source src="assets/img/projects/subaruengine/successful-startup.mp4" type="video/mp4">
+          </video>
+          <span class="gallery-caption">Successful startup after reassembly and timing verification.</span>
+        </button>
+        -->
+  
       </div>
     </section>
-
+  
+    <!-- SKILLS DEMONSTRATED -->
+    <div class="section-label">Skills demonstrated</div>
+    <h2 class="section-title">Relevant skills for hands-on engineering roles</h2>
+  
+    <div class="process-grid">
+      <div class="process-card">
+        <h3>Mechanical and diagnostic skills</h3>
+        <ul class="process-list">
+          <li>Mechanical troubleshooting from symptom to repair scope.</li>
+          <li>Engine disassembly and component access planning.</li>
+          <li>Cylinder head removal and preparation for gasket replacement.</li>
+          <li>Valve and head cleaning as part of top-end service preparation.</li>
+          <li>Mechanical inspection of sealing-related components.</li>
+          <li>Torque procedure discipline during reassembly.</li>
+          <li>Timing chain installation and cam/crank alignment verification.</li>
+        </ul>
+      </div>
+  
+      <div class="process-card">
+        <h3>Engineering behaviors shown</h3>
+        <ul class="process-list">
+          <li>Structured documentation through photos and staged progress.</li>
+          <li>Careful work sequencing to reduce assembly errors.</li>
+          <li>Validation mindset before and after startup.</li>
+          <li>Hands-on problem solving under real mechanical constraints.</li>
+          <li>Ability to explain personal technical projects in a professional engineering format.</li>
+          <li>Transferable mindset for field service, maintenance, reliability, and test/validation roles.</li>
+        </ul>
+      </div>
+    </div>
+  
     <div class="back-row">
       <a href="index.html#projects" class="back-link">← Back to all projects</a>
-      <span>Need a deeper technical breakdown? I can share more notes, photos and measurements on request.</span>
+      <span>Personal hands-on engineering project documented as technical evidence for recruiter review.</span>
     </div>
   </main>
 
