@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hydraulic Leak Troubleshooting & Failure Pattern Analysis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-body: #050509;
+      --text-main: #f5f5f5;
+      --text-muted: #b3b3c2;
+
+      /* THEME: default BLUE */
+      --accent: #1a3d7c;
+      --accent-soft: rgba(26, 61, 124, 0.20);
+
+      --card-bg: rgba(15, 17, 30, 0.9);
+      --border-soft: rgba(255,255,255,0.08);
+      --radius-lg: 18px;
+      --shadow-soft: 0 24px 60px rgba(0,0,0,0.65);
+      --max-width: 1100px;
+
+      /* LIGHT CARDS */
+      --card-bg-light: rgba(245, 246, 248, 0.92);
+      --card-border-light: rgba(0, 0, 0, 0.08);
+      --card-text-main: #1a1a1a;
+      --card-text-muted: #5f6368;
+    }
+
+    body[data-theme="yellow"] {
+      --accent: #f2c230;
+      --accent-soft: rgba(242, 194, 48, 0.20);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(26, 61, 124, 0.35), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(26, 61, 124, 0.25), transparent 60%),
+        var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    body[data-theme="yellow"] {
+      background:
+        radial-gradient(circle at top left, rgba(26, 61, 124, 0.35), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(242, 194, 48, 0.25), transparent 60%),
+        var(--bg-body);
+    }
+
+    a { color: inherit; }
+
+    /* NAV */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(5,5,12,0.92), rgba(5,5,12,0.65));
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.7rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(5,5,12,0.8);
+      flex: 0 0 auto;
+    }
+
+    .brand-text {
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-right { display: inline-flex; align-items: center; gap: 0.75rem; flex: 0 0 auto; }
+    .nav-links { display: flex; gap: 1rem; font-size: 0.82rem; align-items: center; }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      padding: 0.25rem 0.4rem;
+      border-radius: 999px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-links a:hover { background: rgba(255,255,255,0.04); color: var(--text-main); }
+
+    .tag-small {
+      font-size: 0.72rem;
+      padding: 0.24rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.7);
+      color: var(--text-muted);
+    }
+
+    .theme-toggle{
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .45rem .75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(5,5,12,0.6);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: .78rem;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .theme-toggle:hover{ background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.35); transform: translateY(-1px); }
+    .theme-toggle .dot{ width: 10px; height: 10px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 3px rgba(255,255,255,0.06); }
+
+    /* HERO */
+    .hero-wrapper {
+      position: relative;
+      min-height: 75vh;
+      margin-top: 3.1rem;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .hero-banner { position: relative; flex: 1; max-width: 100%; overflow: hidden; }
+
+    /* TODO: replace the remote placeholder with your own hydraulic/LGV-related hero image. */
+    .hero-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to top, rgba(5,5,12,0.9), rgba(5,5,12,0.42)),
+        url("https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1600&q=80");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: saturate(1.05);
+      transform: scale(1.02);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 3.5rem 1.4rem 3rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: flex-end;
+      z-index: 1;
+    }
+
+    .hero-left { display: flex; flex-direction: column; gap: 1rem; }
+    .project-label { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
+    .project-title { font-size: 2.3rem; letter-spacing: -0.04em; line-height: 1.1; }
+    .project-meta { font-size: 0.9rem; color: var(--text-muted); max-width: 780px; }
+
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+    .project-tag {
+      font-size: 0.76rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(5,5,12,0.6);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text-muted);
+    }
+
+    .hero-cta-row { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center; margin-top: 0.8rem; }
+    .btn-primary {
+      padding: 0.65rem 1.3rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 0.86rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .btn-primary:hover { transform: translateY(-1px); background: rgba(47, 107, 255, 1); box-shadow: 0 22px 60px rgba(0,0,0,0.75); }
+    body[data-theme="yellow"] .btn-primary:hover { background: #ffd95b; }
+
+    .btn-ghost {
+      padding: 0.6rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(5,5,12,0.6);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    .btn-ghost:hover { background: rgba(5,5,12,0.9); border-color: rgba(255,255,255,0.5); color: var(--text-main); }
+
+    .hero-right { justify-self: flex-end; }
+    .hero-spec-card {
+      background: var(--card-bg-light);
+      border-radius: 18px;
+      border: 1px solid var(--card-border-light);
+      padding: 1rem 1.1rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+      font-size: 0.82rem;
+      display: grid;
+      gap: 0.4rem;
+      color: var(--card-text-main);
+    }
+    .spec-title { font-size: 0.86rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--card-text-muted); margin-bottom: 0.2rem; }
+    .spec-row { display: flex; justify-content: space-between; gap: 0.6rem; }
+    .spec-label { color: var(--card-text-muted); }
+    .spec-value { font-weight: 600; text-align: right; }
+
+    /* MAIN */
+    main { max-width: var(--max-width); margin: 0 auto; padding: 2.4rem 1.4rem 3rem; }
+    .section-label { font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .section-title { font-size: 1.3rem; margin-bottom: 0.7rem; }
+
+    .whr-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-bottom: 2.4rem; }
+    .whr-card, .process-card, .visual-card {
+      background: var(--card-bg-light);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--card-border-light);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+      color: var(--card-text-muted);
+    }
+    .whr-card { padding: 1rem 1rem 0.9rem; position: relative; overflow: hidden; font-size: 0.86rem; }
+    .whr-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at top right, var(--accent-soft), transparent 55%); opacity: 0.9; pointer-events: none; }
+    .whr-inner { position: relative; z-index: 1; }
+    .whr-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--card-text-main); }
+    .whr-card p { color: var(--card-text-muted); }
+    .whr-tag { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; padding: 0.22rem 0.55rem; border-radius: 999px; background: rgba(5,5,12,0.86); border: 1px solid rgba(255,255,255,0.12); color: var(--text-muted); margin-bottom: 0.5rem; }
+
+    .process-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .process-grid.equal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .process-card { padding: 1.1rem 1.1rem 1rem; font-size: 0.85rem; }
+    .process-card h3, .visual-card h3 { font-size: 0.96rem; margin-bottom: 0.4rem; color: var(--card-text-main); }
+    .process-card p, .visual-card p { margin-bottom: 0.55rem; }
+    .process-list { padding-left: 1.1rem; margin-top: 0.2rem; }
+    .process-list li { margin-bottom: 0.28rem; }
+    .process-list strong { color: var(--card-text-main); }
+
+    .method-steps { counter-reset: step; list-style: none; padding-left: 0; display: grid; gap: 0.45rem; }
+    .method-steps li { position: relative; padding-left: 2rem; }
+    .method-steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0.02rem;
+      width: 1.35rem;
+      height: 1.35rem;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(5,5,12,0.86);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .visual-card { padding: 1.1rem; margin-bottom: 2rem; overflow: hidden; }
+    .pattern-table { width: 100%; border-collapse: collapse; margin-top: 0.7rem; font-size: 0.82rem; color: var(--card-text-muted); }
+    .pattern-table th, .pattern-table td { border: 1px solid rgba(0,0,0,0.08); padding: 0.62rem; text-align: left; vertical-align: top; }
+    .pattern-table th { color: var(--card-text-main); background: rgba(0,0,0,0.04); }
+    .note { font-size: 0.78rem; color: var(--card-text-muted); margin-top: 0.6rem; }
+
+    /* GALLERY */
+    .gallery { margin-top: 2.2rem; }
+    .gallery-grid{ display: grid; grid-template-columns: repeat(12, 1fr); gap: .9rem; margin-top: .8rem; }
+    .gallery-item{
+      grid-column: span 4;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      background: rgba(5,5,12,0.55);
+      padding: 0;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      color: inherit;
+      text-align: left;
+    }
+    .gallery-item:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,0.22); background: rgba(5,5,12,0.70); }
+    .gallery-item img{ display: block; width: 100%; height: 210px; object-fit: cover; }
+    .gallery-item figcaption { padding: 0.7rem 0.8rem 0.8rem; color: var(--text-muted); font-size: 0.78rem; line-height: 1.35; }
+    .gallery-item figcaption strong { display: block; color: var(--text-main); font-size: 0.82rem; margin-bottom: 0.15rem; }
+
+    .gallery-tabs{ display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .6rem; }
+    .gallery-tab{ padding: .45rem .8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(5,5,12,0.55); color: var(--text-muted); cursor: pointer; font-size: .78rem; transition: background .15s ease, border-color .15s ease, color .15s ease; }
+    .gallery-tab:hover{ background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.30); color: var(--text-main); }
+    .gallery-tab.is-active{ border-color: rgba(255,255,255,0.40); color: var(--text-main); background: linear-gradient(to right, rgba(5,5,12,0.65), rgba(5,5,12,0.45)); box-shadow: 0 10px 25px rgba(0,0,0,0.35); }
+
+    /* Lightbox */
+    .lightbox{ position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; place-items: center; z-index: 999; padding: 1.2rem; }
+    .lightbox.is-open{ display: grid; }
+    .lightbox img{ max-width: min(1100px, 96vw); max-height: 86vh; border-radius: 18px; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 30px 80px rgba(0,0,0,0.6); }
+    .lightbox-close{ position: absolute; top: 16px; right: 16px; width: 42px; height: 42px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(5,5,12,0.65); color: var(--text-main); cursor: pointer; font-size: 18px; }
+    .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.25); background: rgba(5,5,12,0.7); color: white; font-size: 28px; cursor: pointer; display: grid; place-items: center; transition: background .15s ease, transform .15s ease; }
+    .lightbox-nav:hover { background: rgba(255,255,255,0.12); transform: translateY(-50%) scale(1.05); }
+    .lightbox-nav.prev { left: 20px; }
+    .lightbox-nav.next { right: 20px; }
+
+    /* BACK LINK / FOOTER */
+    .back-row { display: flex; justify-content: space-between; align-items: center; gap: 0.8rem; margin-top: 1.4rem; font-size: 0.82rem; color: var(--text-muted); }
+    .back-link { text-decoration: none; color: var(--accent); display: inline-flex; align-items: center; gap: 0.3rem; }
+    .footer { max-width: var(--max-width); margin: 0 auto; padding: 1.5rem 1.4rem 2.3rem; font-size: 0.78rem; color: var(--text-muted); display: flex; justify-content: space-between; gap: 0.8rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .footer a { color: var(--text-muted); text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .hero-content { grid-template-columns: minmax(0, 1fr); padding-top: 3rem; }
+      .hero-right { justify-self: stretch; }
+      .whr-grid, .process-grid, .process-grid.equal { grid-template-columns: minmax(0, 1fr); }
+      .gallery-item{ grid-column: span 6; }
+    }
+
+    @media (max-width: 640px) {
+      .nav-inner { padding-inline: 0.9rem; }
+      main { padding-inline: 0.9rem; }
+      .hero-content { padding-inline: 0.9rem; }
+      .nav-links { display: none; }
+      .project-title { font-size: 1.85rem; }
+      .gallery-item{ grid-column: span 12; }
+      .gallery-item img{ height: 220px; }
+      .lightbox-nav { width: 38px; height: 38px; font-size: 24px; }
+      .pattern-table { font-size: 0.75rem; }
+      .pattern-table th, .pattern-table td { padding: 0.48rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="index.html#top" class="brand">
+        <div class="brand-logo">PC</div>
+        <div class="brand-text">Pablo Cruz</div>
+      </a>
+
+      <div class="nav-right">
+        <nav class="nav-links">
+          <span class="tag-small">Project view</span>
+          <a href="index.html#projects">All projects</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Change theme">
+          <span class="dot"></span>
+          <span class="label">Blue</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO / PROJECT TITLE -->
+  <div class="hero-wrapper">
+    <div class="hero-banner">
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="project-label">Project · Field Troubleshooting · Hydraulic Systems</div>
+          <h1 class="project-title">Hydraulic Leak Troubleshooting & Failure Pattern Analysis</h1>
+          <p class="project-meta">
+            Practical field investigation of hydraulic oil leaks across an LGV fleet. The goal was not only to repair
+            visible leaks, but to organize leak history, compare repeated failure points, and explain why multiple units
+            were showing similar O-ring sealing failures.
+          </p>
+
+          <div class="project-tags">
+            <span class="project-tag">Hydraulic leak troubleshooting</span>
+            <span class="project-tag">LGV / AGV field support</span>
+            <span class="project-tag">O-ring sealing failures</span>
+            <span class="project-tag">Root cause reasoning</span>
+            <span class="project-tag">Maintenance documentation</span>
+            <span class="project-tag">Customer-facing explanation</span>
+          </div>
+
+          <div class="hero-cta-row">
+            <a href="#details" class="btn-primary">See technical breakdown</a>
+            <a href="index.html#projects" class="btn-ghost">← Back to all projects</a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-spec-card">
+            <div class="spec-title">Project snapshot</div>
+            <div class="spec-row">
+              <span class="spec-label">Equipment</span>
+              <span class="spec-value">LGV fleet</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Fleet scope</span>
+              <span class="spec-value">[~60 LGVs]</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">System</span>
+              <span class="spec-value">Hydraulic connections & seals</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Failure type</span>
+              <span class="spec-value">Oil leaks / O-rings</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Method</span>
+              <span class="spec-value">Inspection + leak tracking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main id="details">
+    <!-- PROJECT SNAPSHOT -->
+    <div class="section-label">Overview</div>
+    <h2 class="section-title">Project snapshot</h2>
+
+    <div class="whr-grid">
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Challenge</div>
+          <h3 class="whr-title">Repeated leaks across the fleet</h3>
+          <p>
+            Several LGVs showed hydraulic oil leaks at different connection points. Treating each leak as an isolated repair
+            would not explain why similar sealing failures were appearing across multiple units.
+          </p>
+        </div>
+      </article>
+
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Approach</div>
+          <h3 class="whr-title">Simple field data, organized clearly</h3>
+          <p>
+            Leak locations were inspected, cleaned, recorded by LGV number, and compared across the fleet to identify
+            recurring sealing points and repeated component types.
+          </p>
+        </div>
+      </article>
+
+      <article class="whr-card">
+        <div class="whr-inner">
+          <div class="whr-tag">Outcome</div>
+          <h3 class="whr-title">Clearer root cause direction</h3>
+          <p>
+            The pattern pointed toward O-ring sizing, fit, or quality as the likely issue. Replacement O-rings from a different
+            source/specification did not show the same repeated leak behavior during follow-up observation.
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <!-- TECHNICAL CHALLENGE / MY ROLE -->
+    <div class="process-grid">
+      <div class="process-card">
+        <h3>Technical challenge</h3>
+        <p>
+          The main problem was not a single obvious leak point. Leaks appeared across multiple LGVs and at different hydraulic
+          connection points, which made the issue look random at first. However, several failures repeated around similar
+          O-ring sealing locations.
+        </p>
+        <ul class="process-list">
+          <li>Hydraulic oil leaks affected machine cleanliness, reliability, and customer confidence.</li>
+          <li>Different units showed different leak locations, making quick assumptions risky.</li>
+          <li>The investigation needed to separate isolated damage from a fleet-level failure pattern.</li>
+          <li>The final explanation had to be practical enough for maintenance action, not just theoretical.</li>
+        </ul>
+      </div>
+
+      <div class="process-card">
+        <h3>My role</h3>
+        <ul class="process-list">
+          <li>Inspected LGVs and identified visible hydraulic oil traces.</li>
+          <li>Recorded leak locations by LGV number / unit.</li>
+          <li>Compared current and historical leak points across multiple units.</li>
+          <li>Documented the failed sealing component type: O-rings.</li>
+          <li>Supported replacement of failed O-rings and follow-up checks.</li>
+          <li>Helped communicate the failure pattern and likely corrective direction to the customer.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TROUBLESHOOTING METHOD -->
+    <div class="process-grid equal">
+      <div class="process-card">
+        <h3>Troubleshooting method</h3>
+        <ol class="method-steps">
+          <li>Inspect each LGV for active hydraulic leak points and oil traces.</li>
+          <li>Clean suspected areas to distinguish fresh leaks from old oil contamination.</li>
+          <li>Record leak location per LGV number / unit.</li>
+          <li>Compare repeated failure points across the fleet.</li>
+          <li>Inspect the failed sealing component and document if the failure involved an O-ring.</li>
+          <li>Replace failed O-rings using a different source, brand, or specification when available.</li>
+          <li>Monitor whether the same leak point repeats after replacement.</li>
+          <li>Communicate findings and recommended corrective direction to the customer.</li>
+        </ol>
+      </div>
+
+      <div class="process-card">
+        <h3>Why this method worked</h3>
+        <p>
+          The method was intentionally simple: organize field observations well enough to see a pattern. This avoided treating
+          every leak as a random event and helped connect the mechanical symptom to a likely sealing component issue.
+        </p>
+        <ul class="process-list">
+          <li><strong>Mechanical inspection:</strong> locate real oil traces, not assumptions.</li>
+          <li><strong>Unit-by-unit tracking:</strong> make the issue visible at fleet level.</li>
+          <li><strong>Component comparison:</strong> identify whether the same sealing type kept failing.</li>
+          <li><strong>Validation by behavior:</strong> check whether replacement parts changed the failure pattern.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FAILURE PATTERN ANALYSIS -->
+    <section class="visual-card">
+      <div class="section-label">Failure pattern analysis</div>
+      <h2 class="section-title">Basic fleet-level pattern recognition</h2>
+      <p>
+        This was not advanced statistical reliability engineering. It was practical failure tracking: collect enough field data
+        to see whether the leak events were random, isolated, or repeating around similar sealing points.
+      </p>
+
+      <!-- TODO: add simple leak tracking table or diagram -->
+      <table class="pattern-table" aria-label="Example leak tracking table with placeholders">
+        <thead>
+          <tr>
+            <th>Tracking field</th>
+            <th>Example entry / placeholder</th>
+            <th>Why it matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>LGV / unit number</td>
+            <td>[LGV-XX]</td>
+            <td>Links each leak event to a specific machine.</td>
+          </tr>
+          <tr>
+            <td>Leak location</td>
+            <td>[Hydraulic connection point / manifold / fitting area]</td>
+            <td>Shows whether failures are spread randomly or repeat in similar locations.</td>
+          </tr>
+          <tr>
+            <td>Failed component type</td>
+            <td>O-ring</td>
+            <td>Identifies whether the same sealing component is involved repeatedly.</td>
+          </tr>
+          <tr>
+            <td>Frequency marker</td>
+            <td>[Y leak events recorded] / [Z repeated leak locations]</td>
+            <td>Summarizes how often the same issue appeared without exposing confidential data.</td>
+          </tr>
+          <tr>
+            <td>Replacement result</td>
+            <td>No repeated leak observed after replacement with alternate O-ring source/specification</td>
+            <td>Supports the suspected cause without overstating certainty.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">
+        Replace bracketed values only with confirmed numbers. If the exact count is not available, keep the wording general:
+        “multiple units,” “repeated leak events,” or “several recurring sealing points.”
+      </p>
+    </section>
+
+    <!-- ROOT CAUSE / VALIDATION / CUSTOMER OUTCOME -->
+    <div class="process-grid">
+      <div class="process-card">
+        <h3>Suspected root cause</h3>
+        <p>
+          The repeated failed component type was the O-ring. Because failures appeared at multiple leak locations but shared
+          the same sealing component type, the suspected root cause was related to the O-rings themselves rather than one
+          isolated hydraulic connection.
+        </p>
+        <ul class="process-list">
+          <li>Possible incorrect O-ring size or dimensional mismatch.</li>
+          <li>Possible poor fit under operating pressure or assembly conditions.</li>
+          <li>Possible material or manufacturing quality issue.</li>
+          <li>Possible supplier/specification inconsistency.</li>
+        </ul>
+      </div>
+
+      <div class="process-card">
+        <h3>Corrective action and validation logic</h3>
+        <p>
+          Failed O-rings were replaced and the leak points were monitored. The key validation logic was practical: when new
+          O-rings from another source, brand, or specification were installed, those same points did not continue showing the
+          same repeated failure behavior.
+        </p>
+        <ul class="process-list">
+          <li>Removed and replaced failed O-rings at leaking hydraulic points.</li>
+          <li>Used replacement O-rings from a different source/specification where available.</li>
+          <li>Checked whether the same leak point returned after replacement.</li>
+          <li>Used field behavior after repair to support the suspected root cause.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="process-grid equal">
+      <div class="process-card">
+        <h3>Customer-facing outcome</h3>
+        <p>
+          The customer received a clearer technical explanation of what was happening across the machines. Instead of only
+          reacting to oil leaks one by one, the issue could be discussed as a repeated O-ring sealing pattern with a practical
+          corrective direction.
+        </p>
+        <ul class="process-list">
+          <li>Clearer explanation of repeated leak behavior across the LGV fleet.</li>
+          <li>Better distinction between isolated repairs and a repeated sealing component issue.</li>
+          <li>More focused direction for parts replacement and supplier/specification review.</li>
+          <li>Improved documentation to support maintenance decisions.</li>
+        </ul>
+      </div>
+
+      <div class="process-card">
+        <h3>Skills demonstrated</h3>
+        <ul class="process-list">
+          <li>Hydraulic leak troubleshooting</li>
+          <li>LGV / AGV field service support</li>
+          <li>O-ring sealing failure analysis</li>
+          <li>Root cause reasoning</li>
+          <li>Basic failure tracking and pattern recognition</li>
+          <li>Maintenance documentation</li>
+          <li>Corrective action validation</li>
+          <li>Customer-facing technical communication</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+    <section class="gallery" aria-label="Project gallery">
+      <div class="section-label">Gallery</div>
+      <h2 class="section-title">Project photos and visual evidence</h2>
+      <p class="project-meta">
+        Use these images to show inspection, leak evidence, O-ring comparison, and the simple tracking method. Avoid photos
+        that reveal customer names, layouts, internal screens, proprietary parts, or confidential machine identifiers.
+      </p>
+
+      <div class="gallery-tabs" role="tablist" aria-label="Gallery stages">
+        <button class="gallery-tab is-active" type="button" data-stage="inspection" role="tab">Inspection</button>
+        <button class="gallery-tab" type="button" data-stage="leaks" role="tab">Leak Points</button>
+        <button class="gallery-tab" type="button" data-stage="oring" role="tab">O-rings</button>
+        <button class="gallery-tab" type="button" data-stage="tracking" role="tab">Tracking</button>
+      </div>
+
+      <div class="gallery-grid" data-gallery-grid>
+        <!-- TODO: add image of LGV hydraulic system inspection -->
+        <button class="gallery-item" type="button" data-stage="inspection" data-full="assets/img/hydraulics/inspection-01.jpg">
+          <figure>
+            <img src="assets/img/hydraulics/inspection-01.jpg" alt="LGV hydraulic inspection area">
+            <figcaption><strong>Hydraulic inspection area</strong>Visual inspection of hydraulic connection points during field troubleshooting.</figcaption>
+          </figure>
+        </button>
+
+        <!-- TODO: add image of hydraulic connection / fitting area after cleaning -->
+        <button class="gallery-item" type="button" data-stage="inspection" data-full="assets/img/hydraulics/inspection-02.jpg">
+          <figure>
+            <img src="assets/img/hydraulics/inspection-02.jpg" alt="Cleaned hydraulic connection prepared for leak verification">
+            <figcaption><strong>Cleaned leak-check area</strong>Cleaning the area helped separate fresh oil traces from old contamination.</figcaption>
+          </figure>
+        </button>
+
+        <!-- TODO: add image of hydraulic leak point -->
+        <button class="gallery-item" type="button" data-stage="leaks" data-full="assets/img/hydraulics/leak-01.jpg" hidden>
+          <figure>
+            <img src="assets/img/hydraulics/leak-01.jpg" alt="Hydraulic oil leak point on LGV connection">
+            <figcaption><strong>Hydraulic leak point</strong>Example of a visible oil trace used to identify and record a leak location.</figcaption>
+          </figure>
+        </button>
+
+        <!-- TODO: add close-up image of recurring hydraulic sealing point -->
+        <button class="gallery-item" type="button" data-stage="leaks" data-full="assets/img/hydraulics/leak-02.jpg" hidden>
+          <figure>
+            <img src="assets/img/hydraulics/leak-02.jpg" alt="Recurring hydraulic sealing point with oil residue">
+            <figcaption><strong>Recurring sealing point</strong>Close-up photo showing the type of area compared across multiple LGVs.</figcaption>
+          </figure>
+        </button>
+
+        <!-- TODO: add image of failed O-ring removed from hydraulic connection -->
+        <button class="gallery-item" type="button" data-stage="oring" data-full="assets/img/hydraulics/oring-failed-01.jpg" hidden>
+          <figure>
+            <img src="assets/img/hydraulics/oring-failed-01.jpg" alt="Failed O-ring removed from hydraulic connection">
+            <figcaption><strong>Failed O-ring</strong>Removed sealing component documented as the repeated failed part type.</figcaption>
+          </figure>
+        </button>
+
+        <!-- TODO: add image of O-ring comparison -->
+        <button class="gallery-item" type="button" data-stage="oring" data-full="assets/img/hydraulics/oring-comparison-01.jpg" hidden>
+          <figure>
+            <img src="assets/img/hydraulics/oring-comparison-01.jpg" alt="Comparison between failed O-ring and replacement O-ring">
+            <figcaption><strong>O-ring comparison</strong>Suggested visual: failed O-ring beside replacement part, with confidential identifiers removed.</figcaption>
+          </figure>
+        </button>
+
+        <!-- TODO: add simple leak tracking table or diagram -->
+        <button class="gallery-item" type="button" data-stage="tracking" data-full="assets/img/hydraulics/leak-tracking-table-01.jpg" hidden>
+          <figure>
+            <img src="assets/img/hydraulics/leak-tracking-table-01.jpg" alt="Simple leak tracking table by LGV number and leak location">
+            <figcaption><strong>Leak tracking table</strong>Suggested visual: anonymized table showing LGV, leak location, failed component, and follow-up result.</figcaption>
+          </figure>
+        </button>
+
+        <!-- TODO: add simple diagram of repeated O-ring sealing points across multiple LGVs -->
+        <button class="gallery-item" type="button" data-stage="tracking" data-full="assets/img/hydraulics/failure-pattern-diagram-01.jpg" hidden>
+          <figure>
+            <img src="assets/img/hydraulics/failure-pattern-diagram-01.jpg" alt="Failure pattern diagram showing repeated O-ring sealing failures across LGVs">
+            <figcaption><strong>Failure pattern diagram</strong>Suggested visual: simple diagram showing several units linked to repeated O-ring sealing points.</figcaption>
+          </figure>
+        </button>
+      </div>
+    </section>
+
+    <div class="back-row">
+      <a href="index.html#projects" class="back-link">← Back to all projects</a>
+      <span>Technical case study focused on practical troubleshooting, documentation, and customer communication.</span>
+    </div>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+    <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Previous image">‹</button>
+    <img id="lightboxImg" alt="Expanded project photo">
+    <button class="lightbox-nav next" id="lightboxNext" aria-label="Next image">›</button>
+  </div>
+
+  <footer class="footer">
+    <div>© Monte Cruz Engineering – Pablo Cruz</div>
+    <div><a href="index.html#contact">Contact</a></div>
+  </footer>
+
+  <script>
+    // ---------------------------
+    // THEME TOGGLE (Blue / Yellow)
+    // ---------------------------
+    const themeBtn = document.getElementById("themeToggle");
+    const themeLabel = themeBtn?.querySelector(".label");
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "yellow") document.body.setAttribute("data-theme", "yellow");
+
+    function updateThemeLabel(){
+      const t = document.body.getAttribute("data-theme") === "yellow" ? "Yellow" : "Blue";
+      if (themeLabel) themeLabel.textContent = t;
+    }
+    updateThemeLabel();
+
+    themeBtn?.addEventListener("click", () => {
+      const isYellow = document.body.getAttribute("data-theme") === "yellow";
+      if (isYellow) {
+        document.body.removeAttribute("data-theme");
+        localStorage.setItem("theme", "blue");
+      } else {
+        document.body.setAttribute("data-theme", "yellow");
+        localStorage.setItem("theme", "yellow");
+      }
+      updateThemeLabel();
+    });
+
+    // ---------------------------
+    // GALLERY STAGES (TABS)
+    // ---------------------------
+    const tabs = Array.from(document.querySelectorAll(".gallery-tab"));
+    const allItems = Array.from(document.querySelectorAll(".gallery-item"));
+    let activeStage = "inspection";
+
+    function setStage(stage){
+      activeStage = stage;
+      tabs.forEach(t => t.classList.toggle("is-active", t.dataset.stage === stage));
+      allItems.forEach(item => { item.hidden = (item.dataset.stage !== stage); });
+    }
+
+    tabs.forEach(tab => tab.addEventListener("click", () => setStage(tab.dataset.stage)));
+    setStage(activeStage);
+
+    // ---------------------------
+    // LIGHTBOX (stage-aware) + arrows + keyboard + swipe
+    // ---------------------------
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const btnClose = document.getElementById("lightboxClose");
+    const btnPrev = document.getElementById("lightboxPrev");
+    const btnNext = document.getElementById("lightboxNext");
+
+    let currentIndex = 0;
+    let startX = 0;
+
+    function stageItems(){ return allItems.filter(i => i.dataset.stage === activeStage); }
+
+    function openLightbox(index){
+      const items = stageItems();
+      if (!items.length) return;
+
+      currentIndex = index;
+      const full = items[currentIndex]?.dataset?.full;
+      if (!full) return;
+
+      lightboxImg.src = full;
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+    }
+
+    function closeLightbox(){
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImg.src = "";
+    }
+
+    function showPrev(){
+      const items = stageItems();
+      if (!items.length) return;
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      lightboxImg.src = items[currentIndex].dataset.full;
+    }
+
+    function showNext(){
+      const items = stageItems();
+      if (!items.length) return;
+      currentIndex = (currentIndex + 1) % items.length;
+      lightboxImg.src = items[currentIndex].dataset.full;
+    }
+
+    allItems.forEach(item => {
+      item.addEventListener("click", () => {
+        const items = stageItems();
+        const idx = items.indexOf(item);
+        if (idx >= 0) openLightbox(idx);
+      });
+    });
+
+    btnClose?.addEventListener("click", closeLightbox);
+    btnPrev?.addEventListener("click", showPrev);
+    btnNext?.addEventListener("click", showNext);
+
+    lightbox?.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+
+    window.addEventListener("keydown", (e) => {
+      if (!lightbox.classList.contains("is-open")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === "ArrowRight") showNext();
+    });
+
+    lightbox?.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; });
+    lightbox?.addEventListener("touchend", (e) => {
+      const diff = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diff) > 50) diff > 0 ? showPrev() : showNext();
+    });
+  </script>
+</body>
+</html>
